@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+</head>
+<body>
+    <h2>Product entry</h2>
+    <form action="/products" method="post">
+        <label for="title">Title</label>
+        <input name="title" />
+        <label for="price">Price</label>
+        <input name="price" type="number" />
+        <label for="img">Image URL</label>
+        <input name="img" />
+        <button type="submit">Add product</button>
+    </form>
+    <a href="/products">Go to product list</a>
+</body>
+</html>

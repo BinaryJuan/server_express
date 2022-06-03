@@ -1,85 +1,33 @@
-// NOTA: todos los metodos fueron testeados en el navegador, exceptuando el metodo PUT (postman)
 // ___Imports___
 const express = require('express')
-const bodyParser = require('body-parser')
-const { Router } = express
-const Contenedor = require('./archivos')
+const Contenedor = require('./files')
 const products = new Contenedor('products.txt')
 
-// ===== SERVER =====
+// ___SERVER___
 const app = express()
-const router = Router()
-
+app.set('views', './views')
+app.set('view engine', 'ejs')
 app.use(express.json())
-app.use(bodyParser.json())
 app.use(express.urlencoded({extended: true}))
-app.use('/static', express.static(__dirname +'/public'))
-app.use('/api/products', router)
 
-app.get('/', (request, response) => {
-    response.sendFile(__dirname + '/public/index.html')
-})
-
-// a. Devuelve todos los productos
-router.get('/', (request, response) => {
-    products.getAll()
-    .then((productList) => {
-        response.json(productList)
-    })
-})
-
-// b. Devuelve un producto según su ID
-router.get('/:id', (request, response) => {
-    const id = Number(request.params.id)
-    products.getById(id)
-    .then((objProduct) => {
-        objProduct ? response.json(objProduct) : response.send({error: 'Product not found.'})
-    })
-})
-
-// c. Recibe y agrega un producto
-app.get('/addProduct', ( request, response ) => {
-    response.sendFile(__dirname + '/public/form.html')
-})
-
-router.post('/', (request, response) => {
-    let { title, price, img } = request.body
-    price = Number(price)
-    products.save({title, price, img})
+// ------- Routes -------
+app.get('/', (req, res) => {
     products.init()
-    response.send({message: 'Product added successfully.'})
+    res.render('form.ejs', {products})
 })
 
-// d. Recibe y actualiza un producto según su ID
-router.put('/:id', (request, response) => {
-    const { id } = request.params
-    const field = Object.keys(request.body)[0]
-    const value = Object.values(request.body)[0]
-    products.getById(Number(id))
-    .then((objProduct) => {
-        if (objProduct) {
-            products.editById(Number(id), field, value)
-            response.send({message: `Modified product with ID #${id} field (${field}) value (${value})`})
-        } else {
-            response.send({error: 'Product not found.'})
-        }
-    })
+app.get('/products', (req, res) => {
+    res.render('products.ejs', {products})
 })
 
-// e. Elimina un producto según su ID
-router.delete('/:id', (request, response) => {
-    const id = Number(request.params.id)
-    products.getById(id)
-    .then((objProduct) => {
-        if (objProduct) {
-            products.deleteById(id)
-            response.send('Product deleted.')
-        } else {
-            response.send({error: 'Product not found.'})
-        }
-    })
+app.post('/products', async (req, res) => {
+    let { title, price, img } = req.body
+    price = Number(price)
+    await products.save({title, price, img})
+    products.init()
+    res.render('products.ejs', {products})
 })
 
-// ------- Iniciando server -------
+// ------- Initializing server -------
 const server = app.listen(process.env.PORT || 8080)
 server.on('error', error => console.log(`Error found: ${error}`))
