@@ -1,3 +1,4 @@
+<a href="/">Go back to product data input</a>
 <% if (products.length == 0) { %>
     No products added
 <% } else { %>
@@ -13,11 +14,10 @@
             <% products.data.forEach(prod => { %>
                 <tr>
                     <td><%= prod.title %></td>
-                    <td><%= prod.price %></td>
+                    <td>$<%= prod.price %> USD</td>
                     <td style="text-align:center;"><img src=<%= prod.img %> style="width:150px;" alt="product" /></td>
                 </tr>
             <% }) %>
         </tbody>
     </table>
-    <a href="/">Back to product entry</a>
 <% } %>

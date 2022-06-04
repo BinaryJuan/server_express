@@ -25,7 +25,7 @@ app.post('/products', async (req, res) => {
     price = Number(price)
     await products.save({title, price, img})
     products.init()
-    res.render('products.ejs', {products})
+    res.render('form.ejs', {products})
 })
 
 // ------- Initializing server -------
