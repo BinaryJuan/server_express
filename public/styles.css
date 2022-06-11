@@ -1,0 +1,180 @@
+body {
+    background-color: rgb(209, 209, 209);
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: blue;
+}
+
+#productForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+    margin: 0 auto;
+}
+
+#productForm label {
+    font-weight: bold;
+    font-style: italic;
+    font-size: 1.5rem;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    width: fit-content;
+    margin-left: 20%;
+}
+
+#productForm input {
+    width: 60%;
+    min-width: 300px;
+    font-size: 1.5rem;
+    height: 30px;
+    margin: 0 auto;
+    padding: 5px;
+}
+
+#productForm button {
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    margin: 20px auto;
+    border: none;
+    background-color: #03A303;
+    border-radius: .6rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+#productForm button:active {
+    background-color: #049404;
+    border: 1px solid black;
+}
+
+.productsTable {
+    width: 60%;
+    text-align: center;
+    margin: 0 auto;
+    background-color: rgb(9, 9, 54);
+    color: white;
+    border-collapse: collapse;
+    border: 5px solid black;
+    margin-top: 30px;
+    margin-bottom: 120px;
+}
+
+.productsTable th {
+    font-size: 1.3rem;
+    padding: 15px;
+}
+
+.productsTable td {
+    font-size: 1.2rem;
+}
+
+.tableTitles {
+    height: 80px !important;
+}
+
+.productsTable tr {
+    border: 1px solid white;
+    height: 230px;
+}
+
+.messagesContainer {
+    width: 70%;
+    margin: 0 auto 200px auto;
+}
+
+#messages {
+    width: 50%;
+    border: 2px solid black;
+    border-radius: .7rem;
+    margin: 0 auto;
+    padding: 60px 0;
+    overflow-y: auto;
+    max-height: 200px;
+}
+
+.messageStyle {
+    margin: 15px auto;
+    width: 60%;
+    color: white;
+    height: auto;
+    background-color: rgb(61, 57, 73);
+    padding: 15px;
+    border-radius: .7rem;
+}
+
+.messageStyle strong {
+    font-size: 1.2rem;
+}
+
+#msgForm {
+    text-align: center;
+    margin-top: 15px;
+}
+
+#msgForm input {
+    height: 30px;
+    width: 300px;
+    font-size: 1.2rem;
+    padding: 5px;
+}
+
+#sendMsg {
+    width: 100px !important;
+    height: 40px !important;
+    cursor: pointer;
+    margin: 20px auto;
+    border: none;
+    background-color: #03A303;
+    border-radius: .6rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+#sendMsg:active {
+    background-color: #049404;
+    border: 1px solid black;
+}
+
+.hourStyle {
+    color: rgb(209, 205, 205);
+    font-style: italic;
+    font-size: .9rem;
+}
+
+@media (max-width: 600px) {
+    #productForm {
+        width: 90%;
+    }
+
+    .productsTable {
+        width: 90%;
+    }
+
+    .messagesContainer {
+        width: 90%;
+    }
+
+    #messages {
+        width: 80%;
+    }
+
+    #msgForm {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #msgForm input {
+        margin: 15px 0;
+        width: 95%;
+    }
+}
