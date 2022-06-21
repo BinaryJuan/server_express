@@ -1,0 +1,3 @@
+{"title":"Rocket League","price":5,"description":"A good game","stock":20,"img":"https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/1200/public/media/image/2017/02/rocket-league-caratula.jpg?itok=PLma1G8B","timestamp":1655740845054,"id":1}
+{"title":"AOE2","price":10,"description":"A medieval game","stock":"30","img":"https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/1200/public/media/image/2017/03/ficha-age-empires.jpg?itok=J6w2i56r","timestamp":1655742081730,"id":2}
+{"title":"Bully","price":5,"description":"Bully PC","stock":"5","img":"https://media.vandal.net/m/9363/200891612500_1.jpg","timestamp":1655753753375,"id":4}

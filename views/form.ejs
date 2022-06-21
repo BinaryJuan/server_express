@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product input</title>
+    <link rel="stylesheet" type="text/css" href="products.css">
+</head>
+<body>
+    <h1 class="center">Speedfire Games</h1>
+    <h2 class="center">Product data entry</h2>
+    <form id="addProduct" action="/api/products" method="POST">
+        <label for="title">Title</label>
+        <input type="text" name="title" required />
+        <label for="price">Price</label>
+        <input type="number" name="price" required />
+        <label for="description">Description</label>
+        <input type="text" name="description" required />
+        <label for="stock">Stock</label>
+        <input type="number" name="stock" required />
+        <label for="img">URL</label>
+        <input type="url" name="img" required />
+        <input type="submit" class="addProd" value="Add product" />
+    </form>
+    <% if (products.data.length == 0) { %>
+        No products added
+    <% } else { %>
+        <div class="productsListContainer">
+            <% products.data.forEach(prod => { %>
+                <div class="productCard">
+                    <ul>
+                        <li><img src=<%= prod.img %> style="width:150px;" alt="product" /></li>
+                        <li class="title"><%= prod.title %></li>
+                        <li class="price">$<%= prod.price %> USD</li>
+                        <li class="details"><a href=<%= `/api/products/${prod.id}` %>>See details</a></li>
+                    </ul>
+                </div>
+            <% }) %>
+        </div>
+    <% } %>
+    <ul>
+        <li><a href="//localhost:8080/api/products">Product list</a></li>
+        <li><a href="//localhost:8080/api/carts">Carts</a></li>
+    </ul>
+</body>
+</html>
