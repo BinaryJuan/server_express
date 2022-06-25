@@ -1,0 +1,172 @@
+body {
+    font-family: sans-serif;
+}
+
+.productsListContainer {
+    background-color: bisque;
+    display: flex;
+    height: auto;
+    padding: 30px 60px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.formProducts {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.formProducts label {
+    margin: 5px 0px;
+}
+
+.formProducts input {
+    margin: 5px;
+}
+
+.productCard {
+    background-color: aliceblue;
+    width: fit-content;
+    padding: 5px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    margin: 15px 20px;
+}
+
+.productCard ul {
+    list-style: none;
+    padding-left: 0;
+    text-align: center;
+}
+
+.title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.center {
+    text-align: center;
+}
+
+#addProduct {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: auto;
+    padding: 5px 20px;
+}
+
+#addProduct label {
+    margin: 15px 10px 15px 20px;
+    font-weight: bold;
+}
+
+.addProd {
+    margin-left: 10px;
+    padding: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.linkPage a {
+    background-color: #049404;
+    padding: 10px;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.messagesContainer {
+    width: 70%;
+    margin: 0 auto 200px auto;
+}
+
+#messages {
+    width: 50%;
+    border: 2px solid black;
+    border-radius: .7rem;
+    margin: 0 auto;
+    padding: 60px 0;
+    overflow-y: auto;
+    max-height: 200px;
+}
+
+.messageStyle {
+    margin: 15px auto;
+    width: 60%;
+    color: white;
+    height: auto;
+    background-color: rgb(61, 57, 73);
+    padding: 15px;
+    border-radius: .7rem;
+}
+
+.messageStyle strong {
+    font-size: 1.2rem;
+}
+
+#msgForm {
+    text-align: center;
+    margin-top: 15px;
+}
+
+#msgForm input {
+    height: 30px;
+    width: 300px;
+    font-size: 1.2rem;
+    padding: 5px;
+}
+
+#sendMsg {
+    width: 100px !important;
+    height: 40px !important;
+    cursor: pointer;
+    margin: 20px auto;
+    border: none;
+    background-color: #03A303;
+    border-radius: .6rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+#sendMsg:active {
+    background-color: #049404;
+    border: 1px solid black;
+}
+
+.hourStyle {
+    color: rgb(209, 205, 205);
+    font-style: italic;
+    font-size: .9rem;
+}
+
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: blue;
+}
+
+@media (max-width: 600px) {
+    .messagesContainer {
+        width: 90%;
+    }
+
+    #messages {
+        width: 80%;
+    }
+
+    #msgForm {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #msgForm input {
+        margin: 15px 0;
+        width: 95%;
+    }
+}
