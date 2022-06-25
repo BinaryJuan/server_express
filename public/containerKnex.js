@@ -15,8 +15,8 @@ class containerProducts {
             table.integer('timestamp')
             table.string('img')
         })
-        .then(() => console.log("Table created"))
-        .catch(() => {console.log('Table already exists!')})
+        .then(() => console.log("Table products created"))
+        .catch(() => {console.log('Table products already exists!')})
     }
 
     selectProduct(fieldsArray) {

@@ -2,15 +2,17 @@ const socket = io.connect()
 
 // --- Function: show/render messages
 const renderMessages = (messages) => {
-    const content = messages.map((msg) => {
-        return(`
-            <div class="messageStyle">
-                <strong>${msg.user} <span class="hourStyle">${msg.hour}</span></strong>
-                <div>${msg.message}</div>
-            </div>
-        `)
-    }).join(' ')
-    document.getElementById('messages').innerHTML = content
+    if (messages) {
+        const content = messages.map((msg) => {
+            return(`
+                <div class="messageStyle">
+                    <strong>${msg.user} <span class="hourStyle">${msg.hour}</span></strong>
+                    <div>${msg.message}</div>
+                </div>
+            `)
+        }).join(' ')
+        document.getElementById('messages').innerHTML = content
+    }
 }
 
 // --- Function: add a meessage

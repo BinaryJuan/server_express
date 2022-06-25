@@ -7,6 +7,9 @@ const bodyParser = require('body-parser')
 const ContainerProducts = require('./public/containerKnex')
 const options = require('./options/mariaDB')
 const products = new ContainerProducts(options, 'products')
+const ContainerMessages = require('./public/containerSqlite')
+const optionsSqlite = require('./options/sqlite')
+const messages = new ContainerMessages(optionsSqlite, 'messages')
 
 // ======== SERVER ========
 const app = express()
@@ -82,19 +85,19 @@ routerProducts.delete('/:id', (request, response) => {
     }
 })
 
-// === MESSAGES / ADD PRODUCTS
-let messages = [
-    {user: 'Bot', message: 'Welcome to the live chat!', hour: ''}
-]
-
+// === MESSAGES & ADD PRODUCTS
 io.on('connection', socket => {
     // --- User ID
     console.log(`New user connected with ID '${socket.id}'`)
     // --- Message management
-    socket.emit('messages', messages)
+    socket.emit('messages', messages.data)
     socket.on('newMessage', msg => {
-        messages.push(msg)
-        io.sockets.emit('messages', messages)
+        messages.writeMessage([msg])
+        .then(() => {
+            messages.data.push(msg)
+            io.sockets.emit('messages', messages.data)
+        })
+        .catch(error => console.log(error))
     })
     // --- Product management
     socket.emit('products', products.data)
