@@ -1,18 +1,60 @@
 const express = require('express')
-require('./config');
-
+require('./config')
+const bodyParser = require('body-parser')
+const http = require('http')
+const { Server } = require('socket.io')
 const FactoryDAO = require('./daos/index')
+const contenedorMessages = require('./contenedores/contenedorMessages')
+const messages = new contenedorMessages('DB_messages.json')
 
+// ======== SERVER ========
 const app = express()
+const httpServer = http.createServer(app)
+const io = new Server(httpServer)
+
+// --- Server config. ---
+app.use(express.static(__dirname + '/public'))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-
+app.use(bodyParser.json())
+app.set('views', './views')
+app.set('view engine', 'ejs')
 const DAO = FactoryDAO()
 
-app.get('/products', async (req, res) => res.send(await DAO.product.getAll()))
-app.post('/products', async (req, res) => res.send(await DAO.product.save(req.body)))
+// --- Routes ---
+app.get('/', (req, res) => res.send('Bienvenido'))  // Inicio
+app.get('/products', async (req, res) => {  // Lista de productos
+    const products = await DAO.product.getAll()
+    res.render('products.ejs', {products})
+})
+app.get('/products/:id', async (req, res) => {  // Detalles del producto
+    const id = req.params.id
+    const objProduct = await DAO.product.getByID(id)
+    console.log(objProduct)
+    res.render('productDetail.ejs', {objProduct})
+})
+
+app.post('/products', async (req, res) => res.send(await DAO.product.save(req.body))) // 
 
 app.get('/cart', async (req, res) => res.send(await DAO.cart.getAll()))
 app.post('/cart', async (req, res) => res.send(await DAO.cart.save(req.body)))
 
-app.listen(8080)
+// === MESSAGES
+io.on('connection', socket => {
+    // --- User ID
+    console.log(`New user connected with ID '${socket.id}'`)
+    // --- Message management
+    socket.emit('messages', messages.data)
+    socket.on('newMessage', msg => {
+        messages.writeMessage(msg)
+        .then(() => {
+            console.log(messages.data)
+            io.sockets.emit('messages', messages.data)
+        })
+        .catch(error => console.log(error))
+    })
+})
+
+// ------- Initilize server -------
+httpServer.listen(process.env.PORT || 8080)
+httpServer.on('error', error => console.log(`Error found: ${error}`))

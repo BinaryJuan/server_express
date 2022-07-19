@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product input</title>
+    <link rel="stylesheet" type="text/css" href="products.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <h1 class="center">Speedfire Games</h1>
+    <h2 class="font-bold text-2xl text-center mt-4">Products list</h2>
+    <% if (products.length == 0) { %>
+        No products added
+    <% } else { %>
+        <div class="flex flex-wrap mx-4 my-4 bg-gray-500 text-white text-center">
+            <% products.forEach(prod => { %>
+                <div class="mx-4 my-4">
+                    <ul>
+                        <li><img src=<%= prod.img %> style="width:150px;" alt="product" /></li>
+                        <li class="title"><%= prod.title %></li>
+                        <li class="price">$<%= prod.price %> USD</li>
+                        <li class="details underline"><a href=<%= `products/${prod.id}` %>>See details</a></li>
+                    </ul>
+                </div>
+            <% }) %>
+        </div>
+    <% } %>
+    <h2>Online chat</h2>
+    <div class="messagesContainer">
+        <div id="messages"></div>
+        <form id="msgForm">
+            <input type="email" name="id" id="idmail" placeholder="Email" min="1" max="30" />
+            <input type="text" name="fname" id="fname" placeholder="First name" min="1" max="20" />
+            <input type="text" name="lname" id="lname" placeholder="Last name" min="1" max="20" />
+            <input type="number" name="age" id="age" placeholder="Age" min="1" max="200" />
+            <input type="text" name="username" id="username" placeholder="Username" min="1" max="20" />
+            <input type="url" name="avatar" id="avatar" placeholder="Avatar URL" />
+            <input type="text" name="message" id="message" placeholder="Message" min="1" />
+            <input type="submit" value="Send" id="sendMsg" />
+        </form>
+    </div>
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js" type="text/javascript"></script>
+    <!-- Scripts -->
+</body>
+</html>
