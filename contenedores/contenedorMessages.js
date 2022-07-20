@@ -1,6 +1,6 @@
-const fs = require('fs')
+const fs = require('fs');
 
-class ContenedorFile {
+class ContenedorMensajes {
 
     constructor(textJson) {
         this.textJson = textJson;
@@ -20,19 +20,12 @@ class ContenedorFile {
         fs.writeFileSync(this.textJson, JSON.stringify(this.data));
     }
 
-    writeMessage(msg) {
+    async writeMessage(msg) {
+        msg['id'] = this.data.length + 1
         this.data.push(msg)
-        return fs.promises.writeFile(this.textJson, JSON.stringify(this.data))
-    }
-    
-    async getAll() {
-        return this.data
-    }
-
-    async deleteAll() {
-        this.data = []
         this.write()
+        return msg
     }
 }
 
-module.exports = ContenedorFile;
+module.exports = ContenedorMensajes;

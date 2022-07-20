@@ -6,6 +6,7 @@ const { Server } = require('socket.io')
 const FactoryDAO = require('./daos/index')
 const contenedorMessages = require('./contenedores/contenedorMessages')
 const messages = new contenedorMessages('DB_messages.json')
+const { normalize, schema } = require('normalizr')
 
 // ======== SERVER ========
 const app = express()
@@ -20,6 +21,16 @@ app.use(bodyParser.json())
 app.set('views', './views')
 app.set('view engine', 'ejs')
 const DAO = FactoryDAO()
+
+//
+const user = new schema.Entity('users')
+const message = new schema.Entity('messages', {
+    messenger: user
+})
+const messageSchema = new schema.Entity('message', {
+    author: user,
+    messages: [message]
+})
 
 // --- Routes ---
 app.get('/', (req, res) => res.send('Bienvenido'))  // Inicio
@@ -43,15 +54,15 @@ app.post('/cart', async (req, res) => res.send(await DAO.cart.save(req.body)))
 io.on('connection', socket => {
     // --- User ID
     console.log(`New user connected with ID '${socket.id}'`)
+    messages.read()
+    const normalizedData = normalize(messages.data, [messageSchema])
     // --- Message management
-    socket.emit('messages', messages.data)
-    socket.on('newMessage', msg => {
-        messages.writeMessage(msg)
-        .then(() => {
-            console.log(messages.data)
-            io.sockets.emit('messages', messages.data)
-        })
-        .catch(error => console.log(error))
+    socket.emit('messages', normalizedData)
+    socket.on('newMessage', async (msg) => {
+        await messages.writeMessage(msg)
+        messages.read()
+        const normalizedData = normalize(messages.data, [messageSchema])
+        io.sockets.emit('messages', normalizedData)
     })
 })
 

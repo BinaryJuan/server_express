@@ -1,7 +1,23 @@
 const socket = io.connect()
 
+socket.on('messages', normalizedData => {
+    const user = new normalizr.schema.Entity('users')
+    const message = new normalizr.schema.Entity('messages', {
+        messenger: user
+    })
+    const messageSchema = new normalizr.schema.Entity('message', {
+        author: user,
+        messages: [message]
+    })
+    const denormalizedData = normalizr.denormalize(normalizedData.result, [messageSchema], normalizedData.entities)
+    const nPercentage = JSON.stringify(normalizedData).length
+    const dnPercentage = JSON.stringify(denormalizedData).length
+    const compressionPercentage = Math.round((dnPercentage / nPercentage) * 100)
+    renderMessages(denormalizedData, compressionPercentage)
+})
+
 // --- Function: show/render messages
-const renderMessages = (messages) => {
+const renderMessages = (messages, compressionPercentage) => {
     if (messages) {
         const content = messages.map((msg) => {
             return(`
@@ -11,6 +27,7 @@ const renderMessages = (messages) => {
                 </div>
             `)
         }).join(' ')
+        document.getElementById('compression').innerHTML = 'Chat compression: ' + compressionPercentage + '%'
         document.getElementById('messages').innerHTML = content
     }
 }
@@ -36,7 +53,7 @@ const addMessage = (e) => {
                 avatar: avatar.value,
                 timestamp: new Date().toLocaleString()
             },
-            text: message.value
+            text: message.value,
         }
         socket.emit('newMessage', msg)
         id.value = ''
@@ -59,8 +76,3 @@ const addMessage = (e) => {
 
 // --- Event listeners
 document.getElementById('msgForm').addEventListener('submit', addMessage)
-
-// --- Socket.on
-socket.on('messages', messages => {
-    renderMessages(messages)
-})
