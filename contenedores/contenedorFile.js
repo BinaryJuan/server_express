@@ -33,10 +33,11 @@ class ContenedorFile {
         return objID
     }
 
-    async editById(obj , id) {
+    async editById(obj, id) {
         obj['id'] = id
-        const idx = this.getAll().findIndex(p => p.id === id)
-        this.getAll().splice(idx , 1 , obj )
+        this.read()
+        const idx = this.data.findIndex(prod => prod.id == id)
+        this.data.splice(idx , 1 , obj)
         this.write()
     }
 
@@ -55,6 +56,9 @@ class ContenedorFile {
         this.write()
     }
 
+    async productExists(id) {
+        return this.data.find(prod => prod.id == id)
+    }
 }
 
 module.exports = ContenedorFile;

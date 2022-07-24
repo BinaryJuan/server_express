@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products data entry</title>
+    <link rel="stylesheet" type="text/css" href="products.css">
+</head>
+<body>
+    <h2>Welcome <%= sessionUsername %>!</h2>
+    <a href="http://localhost:8080/logout" class="logoutButton">
+        Log-out
+        <img class="logImg" src="log.png" alt="logout"/>
+    </a>
+    <h2>Product data entry</h2>
+    <div class="center mCenter">
+        <a href="http://localhost:8080/products">See product list</a>
+    </div>
+    <div class="center mCenter">
+        <a href="http://localhost:8080/carts">See cart list</a>
+    </div>
+    <div class="content">
+        <form action="/products" method="post" id="productForm">
+            <label for="title">Title</label>
+            <input name="title" />
+            <label for="price">Price</label>
+            <input name="price" type="number" />
+            <label for="img">Image URL</label>
+            <input name="img" />
+            <button type="submit">Add product</button>
+        </form>
+        <% if (products.length == 0) { %>
+            No products added
+        <% } else { %>
+            <div class="dflex">
+                <% products.forEach(prod => { %>
+                    <div class="mx-4 my-4">
+                        <ul class="pDetails">
+                            <li><img src=<%= prod.img %> style="width:150px;" alt="product" /></li>
+                            <li class="title"><%= prod.title %></li>
+                            <li class="price">$<%= prod.price %> USD</li>
+                        </ul>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>

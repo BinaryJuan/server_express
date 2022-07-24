@@ -10,19 +10,34 @@
     <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
 </head>
 <body>
-    <h1 class="center">Speedfire Games</h1>
+    <h2>Logged as <%= username %></h2>
+    <a href="http://localhost:8080/logout" class="logoutButton">
+        Log-out
+        <img class="logImg" src="log.png" alt="logout"/>
+    </a>
+    <div class="center underline">
+        <a class="mt20 mb20" href="http://localhost:8080/products-form">Go to product data entry</a>
+    </div>
+    <div class="center mCenter underline">
+        <a href="http://localhost:8080/carts">See cart list</a>
+    </div>
     <h2 class="font-bold text-2xl text-center mt-4">Products list</h2>
     <% if (products.length == 0) { %>
         No products added
     <% } else { %>
         <div class="flex flex-wrap mx-4 my-4 bg-gray-500 text-white text-center">
             <% products.forEach(prod => { %>
-                <div class="mx-4 my-4">
+                <div class="mx-4 my-4 prodContent">
                     <ul>
                         <li><img src=<%= prod.img %> style="width:150px;" alt="product" /></li>
                         <li class="title"><%= prod.title %></li>
                         <li class="price">$<%= prod.price %> USD</li>
-                        <li class="details underline"><a href=<%= `products/${prod.id}` %>>See details</a></li>
+                        <li class="details underline"><a href=<%= `products/${prod.id}`%>>See details</a></li>
+                        <li class="productButtons">
+                            <button id="add" class="buttonAdd" onClick=<%=`addProduct(${prod.id})`%>>Add</button>
+                            <button id="delete" class="buttonDanger" onClick=<%=`deleteProduct(${prod.id})`%>>Delete</button>
+                            <button id="edit" class="buttonDanger"><a href=<%= `products/edit/${prod.id}`%>>Edit</a></button>
+                        </li>
                     </ul>
                 </div>
             <% }) %>

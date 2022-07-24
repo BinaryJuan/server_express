@@ -11,6 +11,57 @@ body {
     flex-wrap: wrap;
 }
 
+.prodContent img {
+    text-align: center;
+}
+
+.mt20 {
+    margin-top: 20px;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+.dFlexCol {
+    display: flex;
+    flex-direction: column;
+}
+
+.productDisplay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    font-weight: bold;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.productButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.productButtons button {
+    margin: 5px;
+    padding: 5px;
+    border-radius: .25rem;
+    font-weight: bold;
+}
+
+.buttonAdd {
+    background-color: green;
+}
+
+.buttonDanger {
+    background-color: red;
+}
+
 .formProducts {
     margin: 0 auto;
     text-align: center;
@@ -22,6 +73,48 @@ body {
 
 .formProducts input {
     margin: 5px;
+}
+
+.content {
+    text-align: center;
+}
+
+.dflex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: auto;
+    justify-content: center;
+}
+
+.minW {
+    width: min-content;
+}
+
+.cartText {
+    width: max-content;
+}
+
+.pDetails {
+    list-style: none;
+}
+
+.logoutButton {
+    color: white;
+    background-color: red;
+    padding: 10px 20px;
+    border-radius: .25rem;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    margin: 0 auto;
+}
+
+.logImg {
+    width: 25px;
+    margin-left: 10px;
 }
 
 .productCard {
@@ -48,6 +141,10 @@ body {
 
 .center {
     text-align: center;
+}
+
+.mCenter {
+    margin: 15px auto;
 }
 
 #addProduct {
@@ -154,6 +251,29 @@ h2 {
     text-align: center;
     font-size: 2rem !important;
     color: blue;
+}
+
+.cartButtonDel {
+    margin: 5px;
+    padding: 5px;
+    border-radius: .25rem;
+    font-weight: bold;
+    background-color: red;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.cartButtonDelAll {
+    margin: 5px;
+    padding: 5px;
+    border-radius: .25rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+    background-color: red;
+    border: none;
+    cursor: pointer;
+    color: white;
 }
 
 @media (max-width: 600px) {

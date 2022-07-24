@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carts</title>
+    <link rel="stylesheet" type="text/css" href="products.css">
+</head>
+<body>
+    <h2>Logged as <%= username %> </h2>
+    <h2>Carts list</h2>
+    <a href="http://localhost:8080/logout" class="logoutButton">
+        Log-out
+        <img class="logImg" src="log.png" alt="logout"/>
+    </a>
+    <div class="center mCenter">
+        <a href="http://localhost:8080/products">See product list</a>
+    </div>
+    <div class="content">
+        <% if (carts.length == 0) { %>
+            No products added to cart/s
+        <% } else { %>
+            <div class="dFlexCol">
+                <% carts.forEach(prod => { %>
+                    <div class="mt20 mb20">
+                        <div>
+                            <div><img src=<%= prod.img %> style="width:150px;" alt="product" /></div>
+                            <div class="title"><%= prod.title %></div>
+                            <div class="price">$<%= prod.price %> USD</div>
+                            <button onClick=<%=`deleteCartProduct(${prod.id})`%> class="cartButtonDel" >Delete</button>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <button onClick=<%="deleteCart()"%> class="cartButtonDelAll">Delete all</button>
+        <% } %>
+    </div>
+    <!-- Scripts -->
+    <script src="delCart.js" type="text/javascript"></script>
+    <!-- Scripts -->
+</body>
+</html>

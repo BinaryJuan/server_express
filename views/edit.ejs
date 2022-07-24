@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit product</title>
+    <link rel="stylesheet" type="text/css" href="/products.css">
+</head>
+<body>
+    <h2>Logged as <%= username %></h2>
+    <a href="http://localhost:8080/logout" class="logoutButton">
+        Log-out
+        <img class="logImg" src="/log.png" alt="logout"/>
+    </a>
+    <h2>Editting product #<%= prod.id %></h2>
+    <div class="center mCenter">
+        <a href="http://localhost:8080/products">Cancel</a>
+    </div>
+    <div class="content">
+        <form id="productEdit" onsubmit=<%=`editProduct(${prod.id})`%>>
+            <label for="title">Title</label>
+            <input name="title" id="title" />
+            <label for="price">Price</label>
+            <input name="price" id="price" type="number" />
+            <label for="img">Image URL</label>
+            <input name="img" id="img" />
+            <button type="submit">Edit product</button>
+        </form>
+        <div class="productDisplay">
+            <div class="font-bold text-2xl"><%= prod.title || '-' %></div>
+            <div>$<%= prod.price || '-' %> USD</div>
+            <div><img src=<%= prod.img %> style="width:150px;" alt="product" /></div>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script src="/edit.js" type="text/javascript"></script>
+    <!-- Scripts -->
+</body>
+</html>

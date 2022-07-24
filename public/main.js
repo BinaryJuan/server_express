@@ -74,5 +74,26 @@ const addMessage = (e) => {
     }
 }
 
+// --- Function: delete a product by ID
+const deleteProduct = (id) => {
+    fetch(`http://localhost:8080/products/${id}`, { 
+        method: 'DELETE'
+    })
+    .then(() => {
+        window.location.reload()
+    })
+}
+
+// --- Function: add to cart by ID
+const addProduct = (id) => {
+    fetch('http://localhost:8080/carts', {
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        method: 'POST',
+        body: JSON.stringify({
+            addID: id
+        })
+    })
+}
+
 // --- Event listeners
 document.getElementById('msgForm').addEventListener('submit', addMessage)

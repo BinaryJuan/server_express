@@ -1,9 +1,1 @@
-[
-    {"title":"GTAV","price":15,"img":"https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/games/fob/1280/V.jpg","id":1},
-    {"title":"Dying Light","price":12,"img":"https://i.blogs.es/e9e22d/161213-dying-light/450_1000.jpg","id":2},
-    {"title":"RDR2","price":25,"img":"https://image.api.playstation.com/cdn/UP1004/CUSA03041_00/Hpl5MtwQgOVF9vJqlfui6SDB5Jl4oBSq.png","id":3},
-    {"title":"Days Gone","price":32,"img":"https://image.api.playstation.com/vulcan/img/rnd/202011/1204/wYL4v2r8uMQFvVTJlfuj8ICk.png","id":4},
-    {"title":"Age of Empires 2","price":15,"img":"https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/1200/public/media/image/2017/03/ficha-age-empires.jpg?itok=J6w2i56r","id":5},
-    {"title":"Rocket League","price":5,"img":"https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/1200/public/media/image/2017/02/rocket-league-caratula.jpg?itok=PLma1G8B","id":6},
-    {"title":"GTA IV","price":12,"img":"https://support.rockstargames.com/dist/img/es_es/categories/1d241a962bd454c22219.jpg","id":7}
-]
+[{"title":"GTAV","price":15,"img":"https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/games/fob/1280/V.jpg","id":1},{"title":"RDR2","price":25,"img":"https://image.api.playstation.com/cdn/UP1004/CUSA03041_00/Hpl5MtwQgOVF9vJqlfui6SDB5Jl4oBSq.png","id":3},{"title":"Days Gone","price":32,"img":"https://image.api.playstation.com/vulcan/img/rnd/202011/1204/wYL4v2r8uMQFvVTJlfuj8ICk.png","id":4},{"title":"Age of Empires 2","price":15,"img":"https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/1200/public/media/image/2017/03/ficha-age-empires.jpg?itok=J6w2i56r","id":5},{"title":"Rocket League","price":5,"img":"https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/1200/public/media/image/2017/02/rocket-league-caratula.jpg?itok=PLma1G8B","id":6}]

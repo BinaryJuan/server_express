@@ -7,6 +7,8 @@ const FactoryDAO = require('./daos/index')
 const contenedorMessages = require('./contenedores/contenedorMessages')
 const messages = new contenedorMessages('DB_messages.json')
 const { normalize, schema } = require('normalizr')
+const session = require('express-session')
+const mongoStore = require('connect-mongo')
 
 // ======== SERVER ========
 const app = express()
@@ -17,12 +19,24 @@ const io = new Server(httpServer)
 app.use(express.static(__dirname + '/public'))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(session({
+    store: new mongoStore ({
+        mongoUrl: 'mongodb://localhost/sessions'
+    }),
+    secret: '1234',
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+        expires: 60000
+    }
+}))
 app.use(bodyParser.json())
 app.set('views', './views')
 app.set('view engine', 'ejs')
 const DAO = FactoryDAO()
 
-//
+// Normalizr
 const user = new schema.Entity('users')
 const message = new schema.Entity('messages', {
     messenger: user
@@ -32,23 +46,125 @@ const messageSchema = new schema.Entity('message', {
     messages: [message]
 })
 
-// --- Routes ---
-app.get('/', (req, res) => res.send('Bienvenido'))  // Inicio
-app.get('/products', async (req, res) => {  // Lista de productos
+// ===== Routes =====
+// Index log in
+app.get('/', (req, res) => {
+    if (req.session.username) {
+        res.send(`Logged in as ${req.session.username}`)
+    } else {
+        res.render('login.ejs', {})
+    }
+})
+// Index logged in - get
+app.get('/products-form', async (req, res) => {
+    if (!req.session.username) {
+        res.render('login.ejs', {})
+    } else {
+        const products = await DAO.product.getAll()
+        const sessionUsername = req.session.username
+        res.render('form.ejs', {products, sessionUsername})
+    }
+})
+// Index logged in - post
+app.post('/products-form', async (req, res) => {
+    const { username } = req.body
+    const sessionUsername = username ? username : 'Visitor'
+    req.session.username = sessionUsername
     const products = await DAO.product.getAll()
-    res.render('products.ejs', {products})
+    res.render('form.ejs', {products, sessionUsername})
 })
-app.get('/products/:id', async (req, res) => {  // Detalles del producto
+// Logout
+app.get('/logout', (req, res) => {
+    if (!req.session.username) {
+        res.render('login.ejs', {})
+    } else {
+        const username = req.session.username
+        req.session.destroy(err => {
+            if (!err) {
+                res.render('logout.ejs', {username})
+            } else res.send({error: 'logout', body: err})
+        })
+    }
+})
+// Products list
+app.get('/products', async (req, res) => {
+    if (!req.session.username) {
+        res.render('login.ejs', {})
+    } else {
+        const products = await DAO.product.getAll()
+        const username = req.session.username
+        res.render('products.ejs', {products, username})
+    }
+})
+// Add body product
+app.post('/products', async (req, res) => {
+    await DAO.product.save(req.body)
+    const products = await DAO.product.getAll()
+    const username = req.session.username
+    res.render('products.ejs', {products, username})
+})
+// Product detail
+app.get('/products/:id', async (req, res) => {
+    if (!req.session.username) {
+        res.render('login.ejs', {})
+    } else {
+        const id = req.params.id
+        const objProduct = await DAO.product.getByID(id)
+        res.render('productDetail.ejs', {objProduct})
+    }
+})
+// Delete product by ID
+app.delete('/products/:id', async (req, res) => {
+    const id = Number(req.params.id)
+    await DAO.product.deleteByID(id)
+    res.send(`Product with ID #${id} deleted.`)
+})
+// Edit product form
+app.get('/products/edit/:id', async (req, res) => {
+    const id = Number(req.params.id)
+    const username = req.session.username
+    const prod = await DAO.product.getByID(id)
+    res.render('edit.ejs', {username, prod})
+})
+// Edit product by ID
+app.put('/products/:id', async (req, res) => {
+    const id = Number(req.params.id)
+    await DAO.product.editById(req.body, id)
+    const products = await DAO.product.getAll()
+    const username = req.session.username
+    res.render('products.ejs', {products, username})
+})
+// Get all carts
+app.get('/carts', async (req, res) => {
+    if (!req.session.username) {
+        res.render('login.ejs', {})
+    } else {
+        const carts = await DAO.cart.getAll()
+        const username = req.session.username
+        res.render('carts.ejs', {carts, username})
+    }
+})
+// Add to cart
+app.post('/carts', async (req, res) => {
+    const { addID } = req.body
+    const productToAdd = await DAO.product.productExists(addID)
+    if (productToAdd) {
+        res.send(await DAO.cart.save(productToAdd))
+    } else {
+        res.send({error: 'The product does not belong to our inventory.'})
+    }
+})
+// Delete a product in cart
+app.delete('/carts/:id', async (req, res) => {
     const id = req.params.id
-    const objProduct = await DAO.product.getByID(id)
-    console.log(objProduct)
-    res.render('productDetail.ejs', {objProduct})
+    await DAO.cart.deleteByID(id)
+    res.send(`Product with ID #${id} deleted from cart.`)
 })
-
-app.post('/products', async (req, res) => res.send(await DAO.product.save(req.body))) // 
-
-app.get('/cart', async (req, res) => res.send(await DAO.cart.getAll()))
-app.post('/cart', async (req, res) => res.send(await DAO.cart.save(req.body)))
+// Delete cart
+app.delete('/carts', async (req, res) => {
+    await DAO.cart.deleteAll()
+    res.send('All cart products deleted.')
+})
 
 // === MESSAGES
 io.on('connection', socket => {
