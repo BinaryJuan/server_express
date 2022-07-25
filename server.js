@@ -9,6 +9,7 @@ const messages = new contenedorMessages('DB_messages.json')
 const { normalize, schema } = require('normalizr')
 const session = require('express-session')
 const mongoStore = require('connect-mongo')
+const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
 
 // ======== SERVER ========
 const app = express()
@@ -21,7 +22,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(session({
     store: new mongoStore ({
-        mongoUrl: 'mongodb://localhost/sessions'
+        mongoUrl: 'mongodb+srv://admin:admin@desafioclase20.zbhpwfs.mongodb.net/sessions',
+        mongoOptions: advancedOptions
     }),
     secret: '1234',
     resave: false,
