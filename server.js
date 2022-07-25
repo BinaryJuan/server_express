@@ -30,7 +30,7 @@ app.use(session({
     saveUninitialized: false,
     rolling: true,
     cookie: {
-        expires: 60000
+        expires: 600000
     }
 }))
 app.use(bodyParser.json())
