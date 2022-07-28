@@ -10,6 +10,8 @@ const { normalize, schema } = require('normalizr')
 const session = require('express-session')
 const mongoStore = require('connect-mongo')
 const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
+const bcrypt = require('bcrypt')
+const mongoose = require('mongoose')
 
 // ======== SERVER ========
 const app = express()
@@ -37,6 +39,13 @@ app.use(bodyParser.json())
 app.set('views', './views')
 app.set('view engine', 'ejs')
 const DAO = FactoryDAO()
+const userSchema = {
+    username: String,
+    password: String,
+    email: String,
+    role: String
+}
+const userModel = mongoose.model('User', userSchema, 'users')
 
 // Normalizr
 const user = new schema.Entity('users')
@@ -49,6 +58,46 @@ const messageSchema = new schema.Entity('message', {
 })
 
 // ===== Routes =====
+// Register an account - GET
+app.get('/register', (req, res) => {
+    res.render('register.ejs', {})
+})
+// Register successful - POST
+app.post('/register', (req, res) => {
+    const { username, email, password } = req.body
+    const rounds = 10
+    bcrypt.hash(password, rounds, (error, hash) => {
+        if (error) {
+            console.error(error)
+            return
+        }
+        const newUser = new userModel({
+            username: username,
+            password: hash,
+            email: email,
+            role: 'admin'
+        })
+        userModel.findOne({email: email}, (error, foundItem) => {
+            if (error) {
+                console.log(error)
+                res.send(error)
+            } else {
+                if (foundItem) {
+                    res.render('error-auth.ejs', {error: 'This email is already in use'})
+                } else {
+                    newUser.save()
+                    .then(() => {
+                        console.log('New user registered')
+                        res.render('registered.ejs', {username})
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+                }
+            }
+        })
+    })
+})
 // Index log in
 app.get('/', (req, res) => {
     if (req.session.username) {
@@ -57,7 +106,31 @@ app.get('/', (req, res) => {
         res.render('login.ejs', {})
     }
 })
-// Index logged in - get
+// Index logged in - POST
+app.post('/products-form', async (req, res) => {
+    const { email, password } = req.body
+    let sessionUsername
+    userModel.findOne({email: email}, async (error, foundItem) => {
+        if (error) {
+            res.send(error)
+        } else {
+            if (foundItem) {
+                const compare = await bcrypt.compare(password, foundItem.password)
+                req.session.username = foundItem.username
+                sessionUsername = foundItem.username
+                if (compare) {
+                    const products = await DAO.product.getAll()
+                    res.render('form.ejs', {products, sessionUsername})
+                } else {
+                    res.render('error-auth.ejs', {error: 'Incorrect password'})
+                }
+            } else {
+                res.render('error-auth.ejs', {error: 'Account not found'})
+            }
+        }
+    })
+})
+// Index logged in - GET
 app.get('/products-form', async (req, res) => {
     if (!req.session.username) {
         res.render('login.ejs', {})
@@ -66,14 +139,6 @@ app.get('/products-form', async (req, res) => {
         const sessionUsername = req.session.username
         res.render('form.ejs', {products, sessionUsername})
     }
-})
-// Index logged in - post
-app.post('/products-form', async (req, res) => {
-    const { username } = req.body
-    const sessionUsername = username ? username : 'Visitor'
-    req.session.username = sessionUsername
-    const products = await DAO.product.getAll()
-    res.render('form.ejs', {products, sessionUsername})
 })
 // Logout
 app.get('/logout', (req, res) => {

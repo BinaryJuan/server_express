@@ -2,6 +2,16 @@ body {
     font-family: sans-serif;
 }
 
+.errorAuth {
+    background-color: rgb(179, 12, 12);
+    color: white;
+    text-align: center;
+}
+
+.errorAuth h2 {
+    color: white;
+}
+
 .productsListContainer {
     background-color: bisque;
     display: flex;
