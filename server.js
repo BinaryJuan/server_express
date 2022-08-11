@@ -12,6 +12,8 @@ const mongoStore = require('connect-mongo')
 const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
+const argv = require('minimist')(process.argv.slice(2))
+const { fork } = require('child_process')
 
 // ======== SERVER ========
 const app = express()
@@ -153,7 +155,31 @@ app.get('/logout', (req, res) => {
         })
     }
 })
-// Products list
+// Show info. - GET
+app.get('/info', (req, res) => {
+    res.send({
+        inputArgs: argv,
+        platform: process.platform,
+        nodeVersion: process.versions.node,
+        usedMemoryRRS: process.memoryUsage.rss(),
+        exePath: process.execPath,
+        pid: process.ppid,
+        projectFolder: process.cwd()
+    })
+})
+// Show randoms - GET
+app.get('/randoms', (req, res) => {
+    const cant = req.query.cant ? req.query.cant : 100000000
+    const randomCompute = fork('randomCompute.js')
+    randomCompute.send(cant)
+    randomCompute.on('message', numeros => {
+        res.send({
+            active: 'randoms',
+            randoms: numeros
+        })
+    })
+})
+// Products list - GET
 app.get('/products', async (req, res) => {
     if (!req.session.username) {
         res.render('login.ejs', {})
@@ -163,14 +189,14 @@ app.get('/products', async (req, res) => {
         res.render('products.ejs', {products, username})
     }
 })
-// Add body product
+// Add body product - POST
 app.post('/products', async (req, res) => {
     await DAO.product.save(req.body)
     const products = await DAO.product.getAll()
     const username = req.session.username
     res.render('products.ejs', {products, username})
 })
-// Product detail
+// Product detail - GET
 app.get('/products/:id', async (req, res) => {
     if (!req.session.username) {
         res.render('login.ejs', {})
@@ -180,20 +206,20 @@ app.get('/products/:id', async (req, res) => {
         res.render('productDetail.ejs', {objProduct})
     }
 })
-// Delete product by ID
+// Delete product by ID - DELETE
 app.delete('/products/:id', async (req, res) => {
     const id = Number(req.params.id)
     await DAO.product.deleteByID(id)
     res.send(`Product with ID #${id} deleted.`)
 })
-// Edit product form
+// Edit product form - GET
 app.get('/products/edit/:id', async (req, res) => {
     const id = Number(req.params.id)
     const username = req.session.username
     const prod = await DAO.product.getByID(id)
     res.render('edit.ejs', {username, prod})
 })
-// Edit product by ID
+// Edit product by ID - PUT
 app.put('/products/:id', async (req, res) => {
     const id = Number(req.params.id)
     await DAO.product.editById(req.body, id)
@@ -201,7 +227,7 @@ app.put('/products/:id', async (req, res) => {
     const username = req.session.username
     res.render('products.ejs', {products, username})
 })
-// Get all carts
+// Get all carts - GET
 app.get('/carts', async (req, res) => {
     if (!req.session.username) {
         res.render('login.ejs', {})
@@ -211,7 +237,7 @@ app.get('/carts', async (req, res) => {
         res.render('carts.ejs', {carts, username})
     }
 })
-// Add to cart
+// Add to cart - POST
 app.post('/carts', async (req, res) => {
     const { addID } = req.body
     const productToAdd = await DAO.product.productExists(addID)
@@ -221,13 +247,13 @@ app.post('/carts', async (req, res) => {
         res.send({error: 'The product does not belong to our inventory.'})
     }
 })
-// Delete a product in cart
+// Delete a product in cart - DELETE
 app.delete('/carts/:id', async (req, res) => {
     const id = req.params.id
     await DAO.cart.deleteByID(id)
     res.send(`Product with ID #${id} deleted from cart.`)
 })
-// Delete cart
+// Delete cart - DELETE
 app.delete('/carts', async (req, res) => {
     await DAO.cart.deleteAll()
     res.send('All cart products deleted.')
@@ -250,5 +276,7 @@ io.on('connection', socket => {
 })
 
 // ------- Initilize server -------
-httpServer.listen(process.env.PORT || 8080)
+console.log(argv)
+httpServer.listen(argv.p || 8080)
+console.log(`Listening on PORT ${argv.p || 8080}`)
 httpServer.on('error', error => console.log(`Error found: ${error}`))
