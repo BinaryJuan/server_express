@@ -157,6 +157,7 @@ app.get('/logout', (req, res) => {
 })
 // Show info. - GET
 app.get('/info', (req, res) => {
+    const cpus = require('os').cpus().length
     res.send({
         inputArgs: argv,
         platform: process.platform,
@@ -164,7 +165,8 @@ app.get('/info', (req, res) => {
         usedMemoryRRS: process.memoryUsage.rss(),
         exePath: process.execPath,
         pid: process.ppid,
-        projectFolder: process.cwd()
+        projectFolder: process.cwd(),
+        numCPUs: cpus
     })
 })
 // Show randoms - GET
