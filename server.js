@@ -14,6 +14,7 @@ const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const argv = require('minimist')(process.argv.slice(2))
 const { fork } = require('child_process')
+const logger = require("./logger")
 
 // ======== SERVER ========
 const app = express()
@@ -38,6 +39,10 @@ app.use(session({
     }
 }))
 app.use(bodyParser.json())
+app.use((req, res, next) => {
+    logger.info(`Ruta: ${req.path}, Método: ${req.method}`)
+    next()
+})
 app.set('views', './views')
 app.set('view engine', 'ejs')
 const DAO = FactoryDAO()
