@@ -9,16 +9,16 @@
 </head>
 <body>
     <h2>Welcome <%= sessionUsername %>!</h2>
-    <a href="http://localhost:8080/logout" class="logoutButton">
+    <a href="/logout" class="logoutButton">
         Log-out
         <img class="logImg" src="log.png" alt="logout"/>
     </a>
     <h2>Product data entry</h2>
     <div class="center mCenter">
-        <a href="http://localhost:8080/products">See product list</a>
+        <a href="/products">See product list</a>
     </div>
     <div class="center mCenter">
-        <a href="http://localhost:8080/carts">See cart list</a>
+        <a href="/carts">See cart list</a>
     </div>
     <div class="content">
         <form action="/products" method="post" id="productForm">

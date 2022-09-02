@@ -10,12 +10,12 @@
 <body>
     <h2>Logged as <%= username %> </h2>
     <h2>Carts list</h2>
-    <a href="http://localhost:8080/logout" class="logoutButton">
+    <a href="/logout" class="logoutButton">
         Log-out
         <img class="logImg" src="log.png" alt="logout"/>
     </a>
     <div class="center mCenter">
-        <a href="http://localhost:8080/products">See product list</a>
+        <a href="/products">See product list</a>
     </div>
     <div class="content">
         <% if (carts.length == 0) { %>

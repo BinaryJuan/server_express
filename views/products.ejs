@@ -11,15 +11,15 @@
 </head>
 <body>
     <h2>Logged as <%= username %></h2>
-    <a href="http://localhost:8080/logout" class="logoutButton">
+    <a href="/logout" class="logoutButton">
         Log-out
         <img class="logImg" src="log.png" alt="logout"/>
     </a>
     <div class="center underline">
-        <a class="mt20 mb20" href="http://localhost:8080/products-form">Go to product data entry</a>
+        <a class="mt20 mb20" href="/products-form">Go to product data entry</a>
     </div>
     <div class="center mCenter underline">
-        <a href="http://localhost:8080/carts">See cart list</a>
+        <a href="/carts">See cart list</a>
     </div>
     <h2 class="font-bold text-2xl text-center mt-4">Products list</h2>
     <% if (products.length == 0) { %>

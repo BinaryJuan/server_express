@@ -9,13 +9,13 @@
 </head>
 <body>
     <h2>Logged as <%= username %></h2>
-    <a href="http://localhost:8080/logout" class="logoutButton">
+    <a href="/logout" class="logoutButton">
         Log-out
         <img class="logImg" src="/log.png" alt="logout"/>
     </a>
     <h2>Editting product #<%= prod.id %></h2>
     <div class="center mCenter">
-        <a href="http://localhost:8080/products">Cancel</a>
+        <a href="/products">Cancel</a>
     </div>
     <div class="content">
         <form id="productEdit" onsubmit=<%=`editProduct(${prod.id})`%>>
