@@ -14,7 +14,7 @@ const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const argv = require('minimist')(process.argv.slice(2))
 const { fork } = require('child_process')
-const logger = require("./logger")
+//const logger = require("./logger")
 
 // ======== SERVER ========
 const app = express()
@@ -39,10 +39,11 @@ app.use(session({
     }
 }))
 app.use(bodyParser.json())
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     logger.info(`Ruta: ${req.path}, Método: ${req.method}`)
     next()
 })
+*/
 app.set('views', './views')
 app.set('view engine', 'ejs')
 const DAO = FactoryDAO()
@@ -283,7 +284,6 @@ io.on('connection', socket => {
 })
 
 // ------- Initilize server -------
-console.log(argv)
 httpServer.listen(process.env.PORT || 8080)
 console.log(`Listening on PORT ${process.env.PORT || 8080}`)
 httpServer.on('error', error => console.log(`Error found: ${error}`))
