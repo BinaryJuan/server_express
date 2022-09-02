@@ -284,6 +284,6 @@ io.on('connection', socket => {
 })
 
 // ------- Initilize server -------
-httpServer.listen(process.env.PORT || 8080)
-console.log(`Listening on PORT ${process.env.PORT || 8080}`)
+httpServer.listen(process.env.PORT)
+console.log(`Listening on PORT ${process.env.PORT}`)
 httpServer.on('error', error => console.log(`Error found: ${error}`))
