@@ -341,6 +341,6 @@ io.on('connection', socket => {
 })
 
 // ------- Initilize server -------
-httpServer.listen(process.env.PORT)
-console.log(`Listening on PORT ${process.env.PORT}`)
+httpServer.listen(process.env.PORT || 80)
+console.log(`Listening on PORT ${process.env.PORT || 80}`)
 httpServer.on('error', error => console.log(`Error found: ${error}`))
