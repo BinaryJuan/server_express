@@ -7,5 +7,5 @@ const CartModel = mongoose.model(
         createdAt: Date
     })
 );
- 
+
 module.exports = CartModel;

@@ -7,6 +7,8 @@
     <title>Create an account</title>
     <link rel="stylesheet" type="text/css" href="products.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 </head>
 <body>
     <h2 class="font-bold text-2xl text-center mt-4">Register your account</h2>
@@ -17,8 +19,25 @@
         <input type="password" name="password" id="password" min="1" max="40" class="border-2 border-slate-400" />
         <h3 class="font-bold text-xl">Enter your username</h3>
         <input type="text" name="username" id="username" min="1" max="40" class="border-2 border-slate-400" />
+        <h3 class="font-bold text-xl">Enter your name</h3>
+        <input type="text" name="fname" id="fname" min="1" max="40" class="border-2 border-slate-400" />
+        <h3 class="font-bold text-xl">Enter your address</h3>
+        <input type="text" name="address" id="address" min="1" max="80" class="border-2 border-slate-400" />
+        <h3 class="font-bold text-xl">Enter your age</h3>
+        <input type="number" name="age" id="age" min="1" max="150" class="border-2 border-slate-400" />
+        <h3 class="font-bold text-xl">Enter your phone number</h3>
+        <input type="tel" name="phone" id="phone" min="1" max="80" class="border-2 border-slate-400" />
+        <h3 class="font-bold text-xl">Enter your picture</h3>
+        <input type="url" name="userImage" id="userImage" class="border-2 border-slate-400" />
         <button class="bg-blue-800 p-2 text-gray-50 rounded cursor-pointer">Create account</button>
     </form>
     <a href="/">Already have an account? Log-in here.</a>
+    <script>
+        const phoneInputField = document.getElementById('phone');
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+    </script>
 </body>
 </html>

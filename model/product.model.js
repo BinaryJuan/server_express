@@ -6,8 +6,8 @@ const ProductModel = mongoose.model(
         title: String,
         price: Number,
         stock: Number,
-        image: String,
+        img: String
     })
 );
- 
+
 module.exports = ProductModel;

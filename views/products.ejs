@@ -34,9 +34,9 @@
                         <li class="price">$<%= prod.price %> USD</li>
                         <li class="details underline"><a href=<%= `products/${prod.id}`%>>See details</a></li>
                         <li class="productButtons">
-                            <button id="add" class="buttonAdd" onClick=<%=`addProduct(${prod.id})`%>>Add</button>
-                            <button id="delete" class="buttonDanger" onClick=<%=`deleteProduct(${prod.id})`%>>Delete</button>
-                            <button id="edit" class="buttonDanger"><a href=<%= `products/edit/${prod.id}`%>>Edit</a></button>
+                            <button id="add" class="buttonAdd" onClick="addProduct('<%= prod.id %>')">Add</button>
+                            <button id="delete" class="buttonDanger" onClick="deleteProduct('<%= prod.id %>')">Delete</button>
+                            <button id="edit" class="buttonDanger"><a href=<%=`products/edit/${prod.id}`%>>Edit</a></button>
                         </li>
                     </ul>
                 </div>

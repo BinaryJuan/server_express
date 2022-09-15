@@ -25,9 +25,11 @@
     "express-session": "^1.17.3",
     "minimist": "^1.2.6",
     "mongoose": "^6.4.4",
+    "nodemailer": "^6.7.8",
     "normalizr": "^3.6.2",
     "socket.io": "^4.5.1",
     "tailwind": "^4.0.0",
+    "twilio": "^3.82.0",
     "winston": "^3.8.1"
   }
 }

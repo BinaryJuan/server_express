@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express')      
 require('./config')
 const bodyParser = require('body-parser')
 const http = require('http')
@@ -15,6 +15,8 @@ const mongoose = require('mongoose')
 const argv = require('minimist')(process.argv.slice(2))
 const { fork } = require('child_process')
 //const logger = require("./logger")
+const nodemailer = require('nodemailer')
+const emailNotification = 'dante.jterranova463@gmail.com'
 
 // ======== SERVER ========
 const app = express()
@@ -51,6 +53,11 @@ const userSchema = {
     username: String,
     password: String,
     email: String,
+    fname: String,
+    address: String,
+    age: Number,
+    phone: Number,
+    userImage: String,
     role: String
 }
 const userModel = mongoose.model('User', userSchema, 'users')
@@ -72,8 +79,19 @@ app.get('/register', (req, res) => {
 })
 // Register successful - POST
 app.post('/register', (req, res) => {
-    const { username, email, password } = req.body
+    const { username, email, password, fname, address, age, phone, userImage } = req.body
     const rounds = 10
+    const transporter = nodemailer.createTransport ({
+        host: "smtp.gmail.com",
+        port: 465,
+        auth: {
+            user: emailNotification,
+            pass: 'hayzxqidswgzmhnt'
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    })
     bcrypt.hash(password, rounds, (error, hash) => {
         if (error) {
             console.error(error)
@@ -83,6 +101,11 @@ app.post('/register', (req, res) => {
             username: username,
             password: hash,
             email: email,
+            fname: fname,
+            address: address,
+            age: age,
+            phone: phone,
+            userImage: userImage,
             role: 'admin'
         })
         userModel.findOne({email: email}, (error, foundItem) => {
@@ -91,12 +114,30 @@ app.post('/register', (req, res) => {
                 res.send(error)
             } else {
                 if (foundItem) {
-                    res.render('error-auth.ejs', {error: 'This email is already in use'})
+                    res.render('error-auth.ejs', {error: 'This email is already in use!'})
                 } else {
                     newUser.save()
                     .then(() => {
-                        console.log('New user registered')
+                        console.log('New user registered :)')
                         res.render('registered.ejs', {username})
+                        transporter.sendMail({
+                            from: emailNotification,
+                            to: [emailNotification],
+                            subject: 'New user registered',
+                            html:
+                                `
+                                    <h2>User created with username: ${username}</h2>
+                                    <ul>
+                                        <li>Nombre: ${fname}</li>
+                                        <li>Email: ${email}</li>
+                                        <li>Address: ${address}</li>
+                                        <li>Age: ${age}</li>
+                                        <li>Phone: ${phone}</li>
+                                    </ul>
+                                `
+                        })
+                        .then(res => console.log(res))
+                        .catch(err => console.log(err))
                     })
                     .catch(error => {
                         console.log(error)
@@ -125,9 +166,13 @@ app.post('/products-form', async (req, res) => {
             if (foundItem) {
                 const compare = await bcrypt.compare(password, foundItem.password)
                 req.session.username = foundItem.username
+                req.session.userObject = foundItem
                 sessionUsername = foundItem.username
                 if (compare) {
                     const products = await DAO.product.getAll()
+                    const { id } = await DAO.cart.cartSave()
+                    req.session.cartID = id
+                    console.log(req.session.cartID)
                     res.render('form.ejs', {products, sessionUsername})
                 } else {
                     res.render('error-auth.ejs', {error: 'Incorrect password'})
@@ -149,16 +194,26 @@ app.get('/products-form', async (req, res) => {
     }
 })
 // Logout
-app.get('/logout', (req, res) => {
+app.get('/logout', async (req, res) => {
     if (!req.session.username) {
         res.render('login.ejs', {})
     } else {
         const username = req.session.username
+        await DAO.cart.deleteCartByID(req.session.cartID)
         req.session.destroy(err => {
             if (!err) {
                 res.render('logout.ejs', {username})
             } else res.send({error: 'logout', body: err})
         })
+    }
+})
+// Profile - GET
+app.get('/profile', (req, res) => {
+    if (!req.session.username) {
+        res.render('login.ejs', {})
+    } else {
+        let userObject = req.session.userObject
+        res.render('profile.ejs', {userObject})
     }
 })
 // Show info. - GET
@@ -210,7 +265,8 @@ app.get('/products/:id', async (req, res) => {
         res.render('login.ejs', {})
     } else {
         const id = req.params.id
-        const objProduct = await DAO.product.getByID(id)
+        let objProduct = await DAO.product.getByID(id)
+        objProduct = objProduct[0]
         res.render('productDetail.ejs', {objProduct})
     }
 })
@@ -240,17 +296,18 @@ app.get('/carts', async (req, res) => {
     if (!req.session.username) {
         res.render('login.ejs', {})
     } else {
-        const carts = await DAO.cart.getAll()
+        const cart = await DAO.cart.getAll()
+        const userCart = cart[0].products
         const username = req.session.username
-        res.render('carts.ejs', {carts, username})
+        res.render('carts.ejs', {userCart, username})
     }
 })
 // Add to cart - POST
 app.post('/carts', async (req, res) => {
     const { addID } = req.body
-    const productToAdd = await DAO.product.productExists(addID)
-    if (productToAdd) {
-        res.send(await DAO.cart.save(productToAdd))
+    let productToAdd = await DAO.product.getByID(addID)
+    if (productToAdd.length > 0) {
+        res.send(await DAO.cart.insertProductInCart(productToAdd))
     } else {
         res.send({error: 'The product does not belong to our inventory.'})
     }
@@ -284,6 +341,6 @@ io.on('connection', socket => {
 })
 
 // ------- Initilize server -------
-httpServer.listen(process.env.PORT)
-console.log(`Listening on PORT ${process.env.PORT}`)
+httpServer.listen(process.env.PORT || 8080)
+console.log(`Listening on PORT ${process.env.PORT || 8080}`)
 httpServer.on('error', error => console.log(`Error found: ${error}`))

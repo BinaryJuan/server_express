@@ -286,6 +286,18 @@ h2 {
     color: white;
 }
 
+.cartButtonBuy {
+    margin: 5px;
+    padding: 5px;
+    border-radius: .25rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+    background-color: green;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
 @media (max-width: 600px) {
     .messagesContainer {
         width: 90%;

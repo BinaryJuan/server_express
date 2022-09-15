@@ -5,13 +5,29 @@ class ContenedorMongo {
 
     constructor(model) {
         this.model = model
+        this.userCart = 'empty'
     }
 
     async save(obj) {
         const newProduct = new this.model(obj);
         await newProduct.save()
-
         return newProduct
+    }
+
+    async cartSave() {
+        const newCart = new this.model()
+        this.userCart = newCart
+        await newCart.save()
+        return newCart
+    }
+
+    async insertProductInCart(obj) {
+        this.userCart.products.push(obj[0])
+        this.userCart.save()
+    }
+
+    async deleteCartByID(id) {
+        await this.model.deleteOne({_id: new ObjectId(id)})
     }
 
     async getByID(id) {
@@ -28,7 +44,6 @@ class ContenedorMongo {
             { _id: new ObjectId(id)},
             { $set: obj }
         )
-        
         return objUpdated
     }
 
