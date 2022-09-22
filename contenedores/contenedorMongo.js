@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const ObjectId = require('mongoose').Types.ObjectId; 
+const ObjectId = require('mongoose').Types.ObjectId
 
 class ContenedorMongo {
 
@@ -9,7 +8,7 @@ class ContenedorMongo {
     }
 
     async save(obj) {
-        const newProduct = new this.model(obj);
+        const newProduct = new this.model(obj)
         await newProduct.save()
         return newProduct
     }
