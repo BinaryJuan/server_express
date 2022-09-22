@@ -10,13 +10,13 @@ const editedProduct = () => {
 
 // --- Function: edit a product by ID
 const editProduct = (id) => {
-    fetch(`http://localhost:8080/products/${id}`, {
+    fetch(`http://localhost:80/products/${id}`, {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         method: 'PUT',
         body: JSON.stringify(editedProduct())
     })
     .then(() => {
-        window.location.href = 'http://localhost:8080/products'
+        window.location.href = 'http://localhost:80/products'
     })
 }
 

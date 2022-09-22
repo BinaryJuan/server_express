@@ -1,9 +1,9 @@
-const FactoryDAO = require('../daos/index')
 const bcrypt = require('bcrypt')
-const DAO = FactoryDAO()
 const userModel = require('../model/user.model')
+const FactoryDAO = require('../daos/index')
+const DAO = FactoryDAO()
 
-// Index login in
+// Index log in 
 const postLogInController = async (req, res) => {
     const { email, password } = req.body
     let sessionUsername

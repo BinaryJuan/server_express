@@ -18,38 +18,38 @@ const httpServer = http.createServer(app)
 const io = new Server(httpServer)
 
 // --- Server config. ---
+app.use(express.static(__dirname + '/public'))
 app.use(session({
     store: new mongoStore ({
         mongoUrl: 'mongodb+srv://admin:admin@desafioclase20.zbhpwfs.mongodb.net/sessions',
         mongoOptions: advancedOptions
     }),
     secret: 'secret',
-    resave: true,
-    saveUninitialized: true,
-    rolling: false,
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
     cookie: {
         expires: 600000
     }
 }))
 app.set('views', './views')
 app.set('view engine', 'ejs')
-app.use(express.static(__dirname + '/public'))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 // --- Routes ---
-const profile = require('./routes/register.routes')
+const profile = require('./routes/profile.router')
+const productForm = require('./routes/loggedProducts.router')
 const carts = require('./routes/carts.router')
 const products = require('./routes/products.routes')
 const logout = require('./routes/logout.routes')
-const login = require('./routes/login.routes')
 const register = require('./routes/register.routes')
 
+app.use('/products-form', productForm)
 app.use('/profile', profile)
 app.use('/carts', carts)
-app.use('/products-form', products)
+app.use('/products', products)
 app.use('/logout', logout)
-app.use('/login', login)
 app.use('/register', register)
 
 /*app.use((req, res, next) => {

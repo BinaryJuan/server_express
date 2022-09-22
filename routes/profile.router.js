@@ -3,6 +3,6 @@ const profile = Router()
 const {getProfileController} = require('../controllers/profile.controller')
 
 // Profile - GET
-profile.get('/profile', getProfileController)
+profile.get('/', getProfileController)
 
 module.exports = profile

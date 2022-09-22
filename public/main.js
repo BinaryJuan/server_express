@@ -76,7 +76,7 @@ const addMessage = (e) => {
 
 // --- Function: delete a product by ID
 const deleteProduct = (id) => {
-    fetch(`http://localhost:8080/products/${id}`, { 
+    fetch(`http://localhost:80/products/${id}`, { 
         method: 'DELETE'
     })
     .then(() => {
@@ -86,7 +86,7 @@ const deleteProduct = (id) => {
 
 // --- Function: add to cart by ID
 const addProduct = (id) => {
-    fetch('http://localhost:8080/carts', {
+    fetch('http://localhost:80/carts', {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         method: 'POST',
         body: JSON.stringify({
