@@ -10,6 +10,10 @@ const { normalize, schema } = require('normalizr')
 const session = require('express-session')
 const mongoStore = require('connect-mongo')
 const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
+const {graphqlHTTP} = require('express-graphql')
+const schemaGraph =  require('./graphql/Schema.js')
+const CarritoService = require("./services/carrito.service.js")
+const ProductoService = require("./services/producto.service.js")
 //const logger = require("./logger")
 
 // ======== SERVER ========
@@ -57,6 +61,72 @@ app.use('/register', register)
     next()
 })
 */
+
+async function getAllCarritos() {
+    return CarritoService.getInstance().getAll();
+}
+
+async function getAllProductos() {
+    return ProductoService.getInstance().getAll();
+}
+
+async function createCarrito() {
+    return CarritoService.getInstance().create();
+}
+
+async function deleteCarritoById({ id }) {
+    return CarritoService.getInstance().deleteById(id);
+}
+
+async function getAllProductsFromCartById({ id }) {
+    return CarritoService.getInstance().getAllProductsFromCart(id);
+}
+
+async function saveProductToCart({ id, idProd }) {
+    return CarritoService.getInstance().saveProductToCart(id, idProd);
+}
+
+async function deleteProductFromCart({ id, idProd }) {
+    return CarritoService.getInstance().deleteProductFromCart(id, idProd);
+}
+
+async function getProductById({ id }) {
+    return ProductoService.getInstance().getProductById(id);
+}
+
+async function createProduct({ data }) {
+    return ProductoService.getInstance().create(data);
+}
+
+async function updateProductById({ id, data }) {
+    return ProductoService.getInstance().updateProductById(id, data);
+}
+
+async function deleteProductById({ id }) {
+    return ProductoService.getInstance().deleteById(id);
+}
+
+app.use(
+    '/graphql',
+    graphqlHTTP({
+        schemaGraph,
+        rootValue: {
+            getAllCarritos,
+            getAllProductos,
+            createCarrito,
+            deleteCarritoById,
+            getAllProductsFromCartById,
+            saveProductToCart,
+            deleteProductFromCart,
+            getProductById,
+            createProduct,
+            updateProductById,
+            deleteProductById
+        },
+        graphiql: true
+    }
+    )
+);
 
 // Normalizr
 const user = new schema.Entity('users')
