@@ -26,19 +26,22 @@ class ContenedorMongo {
     }
 
     async deleteCartByID(id) {
-        await this.model.deleteOne({_id: new ObjectId(id)})
+        await this.model.deleteOne({_id: id})
     }
 
     async getByID(id) {
-        return this.model.find({_id: new ObjectId(id)})
+        try {
+            return await this.model.find({_id: id})
+        } catch (err) {
+            console.log('No existe éste producto.')
+        }
     }
 
     async getAll() {
-        return this.model.find({})
+        return await this.model.find({})
     }
 
     async editById(obj, id) {
-        console.log('UPDATE');
         const objUpdated = await this.model.updateOne(
             { _id: new ObjectId(id)},
             { $set: obj }

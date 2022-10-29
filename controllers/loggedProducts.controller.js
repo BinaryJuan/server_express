@@ -15,13 +15,13 @@ const postLogInController = async (req, res) => {
                 const compare = await bcrypt.compare(password, foundItem.password)
                 req.session.username = foundItem.username
                 req.session.userObject = foundItem
-                sessionUsername = foundItem.username
+                sessionUsername = foundItem
                 if (compare) {
                     const products = await DAO.product.getAll()
                     const { id } = await DAO.cart.cartSave()
                     req.session.cartID = id
                     console.log(req.session.cartID)
-                    res.render('form.ejs', {products, sessionUsername})
+                    res.render('products.ejs', {products, sessionUsername})
                 } else {
                     res.render('error-auth.ejs', {error: 'Incorrect password'})
                 }
@@ -37,9 +37,13 @@ const renderLoggedInController = async (req, res) => {
     if (!req.session.username) {
         res.render('login.ejs', {})
     } else {
-        const products = await DAO.product.getAll()
-        const sessionUsername = req.session.username
-        res.render('form.ejs', {products, sessionUsername})
+        const sessionUsername = req.session.userObject
+        if (sessionUsername.role == 'admin') {
+            const products = await DAO.product.getAll()
+            res.render('form.ejs', {products, sessionUsername})
+        } else {
+            res.send('Error, forbidden route (you are not an admin)')
+        }
     }
 }
 

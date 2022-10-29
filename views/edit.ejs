@@ -13,18 +13,17 @@
         Log-out
         <img class="logImg" src="/log.png" alt="logout"/>
     </a>
-    <h2>Editting product #<%= prod.id %></h2>
     <div class="center mCenter">
         <a href="/products">Cancel</a>
     </div>
     <div class="content">
-        <form id="productEdit" onsubmit=<%=`editProduct(${prod.id})`%>>
+        <form id="productEdit" onsubmit=<%=`editProduct("${prod.id}")`%>>
             <label for="title">Title</label>
-            <input name="title" id="title" />
+            <input name="title" id="title" value="<%= prod.title %>" required />
             <label for="price">Price</label>
-            <input name="price" id="price" type="number" />
+            <input name="price" id="price" value="<%= prod.price %>" type="number" required />
             <label for="img">Image URL</label>
-            <input name="img" id="img" />
+            <input name="img" id="img" value="<%= prod.img %>" required />
             <button type="submit">Edit product</button>
         </form>
         <div class="productDisplay">

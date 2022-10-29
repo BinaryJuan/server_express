@@ -10,39 +10,125 @@
     <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
 </head>
 <body>
-    <h2>Logged as <%= username %></h2>
-    <a href="/logout" class="logoutButton">
-        Log-out
-        <img class="logImg" src="log.png" alt="logout"/>
-    </a>
+    <nav class=" bg-white w-full flex relative justify-between items-center mx-auto px-8 h-20">
+        <div class="inline-flex">
+            <a class="_o6689fn mt-5" href="/"><img src='https://i.imgur.com/IyKA8ix.png' /></a>
+        </div>
+        <div class="flex-initial">
+            <div class="flex justify-end items-center relative">
+            <div class="flex mr-4 items-center">
+                <a class="inline-block py-2 px-3 hover:bg-gray-200 rounded-full" href="#">
+                <div class="flex items-center relative cursor-pointer whitespace-nowrap">Logged as <%= sessionUsername.username %></div>
+                </a>
+            </div>
+            <h4 class="mr-5 bg-gray-200 p-2 rounded">ROLE: <%= sessionUsername.role %></h4>
+            <div class="block">
+                <div class="inline relative">
+                    <button type="button" class="inline-flex items-center relative px-2 border rounded-full hover:shadow-lg">
+                        <div class="pl-1">
+                            <svg
+                                viewBox="0 0 32 32"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                                role="presentation"
+                                focusable="false"
+                                style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"
+                            >
+                                <g fill="none" fill-rule="nonzero">
+                                    <path d="m2 16h28"></path>
+                                    <path d="m2 24h28"></path>
+                                    <path d="m2 8h28"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="block flex-grow-0 flex-shrink-0 h-10 w-12 pl-5">
+                            <svg
+                                viewBox="0 0 32 32"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                                role="presentation"
+                                focusable="false"
+                                style="display: block; height: 100%; width: 100%; fill: currentcolor;"
+                            >
+                                <path d="m16 .7c-8.437 0-15.3 6.863-15.3 15.3s6.863 15.3 15.3 15.3 15.3-6.863 15.3-15.3-6.863-15.3-15.3-15.3zm0 28c-4.021 0-7.605-1.884-9.933-4.81a12.425 12.425 0 0 1 6.451-4.4 6.507 6.507 0 0 1 -3.018-5.49c0-3.584 2.916-6.5 6.5-6.5s6.5 2.916 6.5 6.5a6.513 6.513 0 0 1 -3.019 5.491 12.42 12.42 0 0 1 6.452 4.4c-2.328 2.925-5.912 4.809-9.933 4.809z"></path>
+                            </svg>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <a href="/logout" class="logoutButton ml-5">
+                Log-out
+                <img class="logImg" src="log.png" alt="logout"/>
+            </a>
+            </div>
+        </div>
+    </nav>
+    <h2 class="font-bold text-2xl text-center mt-4 mb-2">Products list</h2>
     <div class="center underline">
         <a class="mt20 mb20" href="/products-form">Go to product data entry</a>
     </div>
     <div class="center mCenter underline">
         <a href="/carts">See cart list</a>
     </div>
-    <h2 class="font-bold text-2xl text-center mt-4">Products list</h2>
     <% if (products.length == 0) { %>
         No products added
     <% } else { %>
-        <div class="flex flex-wrap mx-4 my-4 bg-gray-500 text-white text-center">
+        <div class="flex flex-wrap mx-4 my-4 text-white text-center bg-slate-200">
             <% products.forEach(prod => { %>
-                <div class="mx-4 my-4 prodContent">
-                    <ul>
-                        <li><img src=<%= prod.img %> style="width:150px;" alt="product" /></li>
-                        <li class="title"><%= prod.title %></li>
-                        <li class="price">$<%= prod.price %> USD</li>
-                        <li class="details underline"><a href=<%= `products/${prod.id}`%>>See details</a></li>
-                        <li class="productButtons">
-                            <button id="add" class="buttonAdd" onClick="addProduct('<%= prod.id %>')">Add</button>
-                            <button id="delete" class="buttonDanger" onClick="deleteProduct('<%= prod.id %>')">Delete</button>
-                            <button id="edit" class="buttonDanger"><a href=<%=`products/edit/${prod.id}`%>>Edit</a></button>
-                        </li>
-                    </ul>
+                <div tabindex="0" class="focus:outline-none">
+                    <div class="mx-auto container py-8">
+                        <div class="flex flex-wrap items-center lg:justify-between justify-center">
+                            <div tabindex="0" class="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
+                                <div>
+                                    <img alt="product image" src=<%= prod.img %> tabindex="0" class="focus:outline-none w-full h-64" />
+                                </div>
+                                <div class="bg-white">
+                                    <div class="flex items-center justify-between px-4 pt-4">
+                                        <div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" tabindex="0" class="focus:outline-none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="bg-yellow-200 py-1.5 px-6 rounded-full">
+                                            <p tabindex="0" class="focus:outline-none text-xs text-yellow-700">Featured</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="flex items-center">
+                                            <h2 tabindex="0" class="focus:outline-none text-lg font-semibold"><%= prod.title %></h2>
+                                        </div>
+                                        <h3 tabindex="0" class="text-gray-600 mt-2 text-xl text-left">$<%= prod.price %> USD</h3>
+                                        <p class="text-left"><a class="text-gray-500 hover:underline" href=<%= `products/${prod.id}`%>>See details</a></p>
+                                        <div class="flex mt-4">
+                                            <div>
+                                                <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">12 months warranty</p>
+                                            </div>
+                                            <div class="pl-2">
+                                                <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">Digital</p>
+                                            </div>
+                                        </div>
+                                        <% if (sessionUsername.role == 'admin') { %>
+                                            <li class="productButtons mt-5">
+                                                <button id="add" class="buttonAdd" onClick="addProduct('<%= prod.id %>')">Add</button>
+                                                <button id="delete" class="buttonDanger" onClick="deleteProduct('<%= prod.id %>')">Delete</button>
+                                                <button id="edit" class="buttonDanger"><a href=<%=`products/edit/${prod.id}`%>>Edit</a></button>
+                                            </li>
+                                        <% } else { %> 
+                                            <li class="productButtons mt-5">
+                                                <button id="add" class="buttonAdd" onClick="addProduct('<%= prod.id %>')">Add</button>
+                                            </li>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             <% }) %>
         </div>
     <% } %>
+
     <h2>Online chat</h2>
     <div class="messagesContainer">
         <div id="messages"></div>

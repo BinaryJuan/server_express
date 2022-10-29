@@ -8,8 +8,8 @@ const getAllCartsController = async (req, res) => {
     } else {
         const cart = await DAO.cart.getAll()
         const userCart = cart[0].products
-        const username = req.session.username
-        res.render('carts.ejs', {userCart, username})
+        const user = req.session.userObject
+        res.render('carts.ejs', {userCart, user})
     }
 }
 

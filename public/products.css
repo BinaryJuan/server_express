@@ -2,6 +2,22 @@ body {
     font-family: sans-serif;
 }
 
+.routesNav {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(113, 113, 184);
+    margin-top: 20px;
+}
+
+.routesNav div {
+    margin: 30px;
+    font-size: 1.3rem;
+}
+
+.navLink {
+    color: white;
+}
+
 .errorAuth {
     background-color: rgb(179, 12, 12);
     color: white;

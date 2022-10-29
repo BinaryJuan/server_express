@@ -14,21 +14,21 @@
     <h2 class="font-bold text-2xl text-center mt-4">Register your account</h2>
     <form id="register" class="ml-4" action="/register" method="post">
         <h3 class="font-bold text-xl">Enter your email</h3>
-        <input type="email" name="email" id="email" min="1" max="40" class="border-2 border-slate-400" />
+        <input type="email" name="email" id="email" min="1" max="40" class="border-2 border-slate-400" required />
         <h3 class="font-bold text-xl">Enter your password</h3>
-        <input type="password" name="password" id="password" min="1" max="40" class="border-2 border-slate-400" />
+        <input type="password" name="password" id="password" min="1" max="40" class="border-2 border-slate-400" required />
         <h3 class="font-bold text-xl">Enter your username</h3>
-        <input type="text" name="username" id="username" min="1" max="40" class="border-2 border-slate-400" />
+        <input type="text" name="username" id="username" min="1" max="40" class="border-2 border-slate-400" required />
         <h3 class="font-bold text-xl">Enter your name</h3>
-        <input type="text" name="fname" id="fname" min="1" max="40" class="border-2 border-slate-400" />
+        <input type="text" name="fname" id="fname" min="1" max="40" class="border-2 border-slate-400" required />
         <h3 class="font-bold text-xl">Enter your address</h3>
-        <input type="text" name="address" id="address" min="1" max="80" class="border-2 border-slate-400" />
+        <input type="text" name="address" id="address" min="1" max="80" class="border-2 border-slate-400" required />
         <h3 class="font-bold text-xl">Enter your age</h3>
-        <input type="number" name="age" id="age" min="1" max="150" class="border-2 border-slate-400" />
+        <input type="number" name="age" id="age" min="1" max="150" class="border-2 border-slate-400" required />
         <h3 class="font-bold text-xl">Enter your phone number</h3>
-        <input type="tel" name="phone" id="phone" min="1" max="80" class="border-2 border-slate-400" />
+        <input type="tel" name="phone" id="phone" min="1" max="80" class="border-2 border-slate-400" required />
         <h3 class="font-bold text-xl">Enter your picture</h3>
-        <input type="url" name="userImage" id="userImage" class="border-2 border-slate-400" />
+        <input type="url" name="userImage" id="userImage" class="border-2 border-slate-400" required />
         <button class="bg-blue-800 p-2 text-gray-50 rounded cursor-pointer">Create account</button>
     </form>
     <a href="/">Already have an account? Log-in here.</a>

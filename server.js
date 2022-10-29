@@ -49,12 +49,16 @@ const products = require('./routes/products.routes')
 const logout = require('./routes/logout.routes')
 const register = require('./routes/register.routes')
 
+app.use('/', productForm)
 app.use('/products-form', productForm)
 app.use('/profile', profile)
 app.use('/carts', carts)
 app.use('/products', products)
 app.use('/logout', logout)
 app.use('/register', register)
+app.all("*", (req, res) => {
+    res.render('notfound.ejs')
+})
 
 /*app.use((req, res, next) => {
     logger.info(`Ruta: ${req.path}, Método: ${req.method}`)

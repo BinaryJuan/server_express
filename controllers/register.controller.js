@@ -37,7 +37,7 @@ const postRegisterController = (req, res) => {
             age: age,
             phone: phone,
             userImage: userImage,
-            role: 'admin'
+            role: 'user'
         })
         userModel.findOne({email: email}, (error, foundItem) => {
             if (error) {
