@@ -14,6 +14,10 @@ const {graphqlHTTP} = require('express-graphql')
 const schemaGraph =  require('./graphql/Schema.js')
 const CarritoService = require("./services/carrito.service.js")
 const ProductoService = require("./services/producto.service.js")
+const OrderService = require("./services/order.service.js")
+const MessageService = require("./services/message.service.js")
+const FactoryDAO = require('./daos/index')
+const DAO = FactoryDAO()
 //const logger = require("./logger")
 
 // ======== SERVER ========
@@ -110,6 +114,14 @@ async function deleteProductById({ id }) {
     return ProductoService.getInstance().deleteById(id);
 }
 
+async function createOrder() {
+    return OrderService.getInstance().create()
+}
+
+async function createMessage() {
+    return MessageService.getInstance().create()
+}
+
 app.use(
     '/graphql',
     graphqlHTTP({
@@ -125,7 +137,9 @@ app.use(
             getProductById,
             createProduct,
             updateProductById,
-            deleteProductById
+            deleteProductById,
+            createOrder,
+            createMessage
         },
         graphiql: true
     }
@@ -162,7 +176,8 @@ io.on('connection', socket => {
     socket.emit('messages', normalizedData)
     socket.on('newMessage', async (msg) => {
         await messages.writeMessage(msg)
-        messages.read()
+        const messagesMongo = messages.read()
+        await DAO.message.messagesSave(messagesMongo)
         const normalizedData = normalize(messages.data, [messageSchema])
         io.sockets.emit('messages', normalizedData)
     })

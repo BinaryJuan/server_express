@@ -20,7 +20,6 @@ const postLogInController = async (req, res) => {
                     const products = await DAO.product.getAll()
                     const { id } = await DAO.cart.cartSave()
                     req.session.cartID = id
-                    console.log(req.session.cartID)
                     res.render('products.ejs', {products, sessionUsername})
                 } else {
                     res.render('error-auth.ejs', {error: 'Incorrect password'})

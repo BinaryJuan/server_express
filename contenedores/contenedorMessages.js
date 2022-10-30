@@ -1,4 +1,5 @@
-const fs = require('fs');
+const fs = require('fs')
+const ObjectId = require('mongoose').Types.ObjectId
 
 class ContenedorMensajes {
 
@@ -14,6 +15,7 @@ class ContenedorMensajes {
 
     read() {
         this.data = JSON.parse(fs.readFileSync(this.textJson));
+        return this.data
     }
 
     write() {

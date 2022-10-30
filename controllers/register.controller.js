@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
-const emailNotification = 'dante.jterranova463@gmail.com'
+const emailNotification = process.env.EMAIL
 const userModel = require('../model/user.model')
 
 // Register an account
@@ -17,7 +17,7 @@ const postRegisterController = (req, res) => {
         port: 465,
         auth: {
             user: emailNotification,
-            pass: 'hayzxqidswgzmhnt'
+            pass: 'bmhefmnvcnbcfdgh'
         },
         tls: {
             rejectUnauthorized: false
@@ -49,7 +49,7 @@ const postRegisterController = (req, res) => {
                 } else {
                     newUser.save()
                     .then(() => {
-                        console.log('New user registered :)')
+                        console.log('New user registered!')
                         res.render('registered.ejs', {username})
                         transporter.sendMail({
                             from: emailNotification,

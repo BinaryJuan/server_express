@@ -17,9 +17,7 @@ const addProductController = async (req, res) => {
     const user = req.session.userObject
     if (user.role == 'admin') {
         await DAO.product.save(req.body)
-        const products = await DAO.product.getAll()
-        const sessionUsername = req.session.userObject
-        res.render('products.ejs', {products, sessionUsername})
+        res.redirect('/')
     } else {
         res.send('Error, forbidden access (you are not an admin)')
     }

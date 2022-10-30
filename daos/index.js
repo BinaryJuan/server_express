@@ -4,6 +4,8 @@ const CartFileDAO = require('./cart/cartFileDAO')
 const ProductFileDAO = require('./products/productFileDAO')
 const CartMongoDAO = require('./cart/cartMongoDAO')
 const ProductMongoDAO = require('./products/productMongoDAO')
+const OrderMongoDAO = require('./order/orderMongoDAO')
+const MessageMongoDAO = require('./message/messageMongoDAO')
 require('dotenv').config()
 
 const FactoryDAO = () => {
@@ -26,7 +28,9 @@ const FactoryDAO = () => {
         console.log('Generate DAO with mongo');
         return {
             cart: new CartMongoDAO(),
-            product: new ProductMongoDAO()
+            product: new ProductMongoDAO(),
+            order: new OrderMongoDAO(),
+            message: new MessageMongoDAO()
         }
     }
 

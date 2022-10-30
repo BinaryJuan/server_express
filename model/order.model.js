@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
-const CartModel = mongoose.model(
-    'Cart', 
+const OrderModel = mongoose.model('Order',
     new mongoose.Schema({
+        user: String,
         products: [],
         createdAt: Date
     })
-);
+)
 
-module.exports = CartModel;
+module.exports = OrderModel

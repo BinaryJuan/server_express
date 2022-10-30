@@ -78,11 +78,11 @@
     <div class="content">
         <form class="mb-10" action="/products" method="post" id="productForm">
             <label class="text-2xl" for="title">Title</label>
-            <input class="mr-5 bg-gray-200 h-8" name="title" />
+            <input class="mr-5 bg-gray-200 h-8" name="title" required />
             <label class="text-2xl" for="price">Price</label>
-            <input class="mr-5 bg-gray-200 h-8" name="price" type="number" />
+            <input class="mr-5 bg-gray-200 h-8" name="price" type="number" required />
             <label class="text-2xl" for="img">Image URL</label>
-            <input class="mr-5 bg-gray-200 h-8" name="img" />
+            <input class="mr-5 bg-gray-200 h-8" name="img" required />
             <button class="mt-5 block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded" type="submit">Add product</button>
         </form>
         <% if (products.length == 0) { %>

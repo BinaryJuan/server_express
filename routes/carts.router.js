@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const carts = Router()
-const {getAllCartsController, addToCartController, deleteCartController, deleteAllCartsController} = require('../controllers/carts.controller')
+const {getAllCartsController, addToCartController, deleteCartController, deleteAllCartsController, sendOrder, deleteCartAll} = require('../controllers/carts.controller')
 
 // Get all carts - GET
 carts.get('/', getAllCartsController)
@@ -10,5 +10,9 @@ carts.post('/', addToCartController)
 carts.delete('/:id', deleteCartController)
 // Delete cart - DELETE
 carts.delete('/', deleteAllCartsController)
+// Send order to whatsapp
+carts.post('/purchase', sendOrder)
+// Delete all products from cart
+carts.delete('/deleteAll', deleteCartAll)
 
 module.exports = carts
