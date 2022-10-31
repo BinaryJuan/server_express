@@ -19,6 +19,7 @@ const postLogInController = async (req, res) => {
                         req.session.userObject = foundItem
                         sessionUsername = foundItem
                         const products = await DAO.product.getAll()
+                        await DAO.cart.deleteAllProductsInCartLog()
                         const { id } = await DAO.cart.cartSave()
                         req.session.cartID = id
                         res.render('products.ejs', {products, sessionUsername})

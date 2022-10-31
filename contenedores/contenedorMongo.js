@@ -81,6 +81,10 @@ class ContenedorMongo {
         cart[0].save()
     }
 
+    async deleteAllProductsInCartLog() {
+        await this.model.remove({})
+    }
+
     async messagesSave(messages) {
         const messagesFetch = await this.getAll()
         if (messagesFetch[0]) {
