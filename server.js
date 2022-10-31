@@ -18,7 +18,6 @@ const OrderService = require("./services/order.service.js")
 const MessageService = require("./services/message.service.js")
 const FactoryDAO = require('./daos/index')
 const DAO = FactoryDAO()
-//const logger = require("./logger")
 
 // ======== SERVER ========
 const app = express()
@@ -65,12 +64,6 @@ app.use('/chat', messageRouter)
 app.all("*", (req, res) => {
     res.render('notfound.ejs')
 })
-
-/*app.use((req, res, next) => {
-    logger.info(`Ruta: ${req.path}, Método: ${req.method}`)
-    next()
-})
-*/
 
 async function getAllCarritos() {
     return CarritoService.getInstance().getAll();

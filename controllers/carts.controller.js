@@ -15,7 +15,7 @@ const getAllCartsController = async (req, res) => {
             res.render('carts.ejs', {userCart, user})
         }
     } catch(err) {
-        console.log(err)
+        res.render('error.ejs', {err})
     }
 }
 
@@ -30,7 +30,7 @@ const addToCartController = async (req, res) => {
             res.send({error: 'The product does not belong to our inventory.'})
         }
     } catch(err) {
-        console.log(err)
+        res.render('error.ejs', {err})
     }
 }
 
@@ -41,73 +41,85 @@ const deleteCartController = async (req, res) => {
         await DAO.cart.deleteProductInCart(req.session.cartID, prodId)
         res.send(`Product with ID #${prodId} deleted from cart.`)
     } catch (err) {
-        console.log(err)
+        res.render('error.ejs', {err})
     }
 }
 
 // Delete cart - DELETE
 const deleteAllCartsController = async (req, res) => {
-    await DAO.cart.deleteAll()
-    res.send('All cart products deleted.')
+    try {
+        await DAO.cart.deleteAll()
+        res.send('All cart products deleted.')
+    } catch (err) {
+        res.render('error.ejs', {err})
+    }
 }
 
 // --- Function: send order
 const sendOrder = async (req, res) => {
-    const cart = await DAO.cart.getAll()
-    const titles = req.body.map(obj => {
-        return obj.title
-    }).join(', ')
-    const accountSid = process.env.TWILIO_ACCOUNT_SID
-    const authToken = process.env.TWILIO_AUTH_TOKEN
-    const client = require('twilio')(accountSid, authToken)
-    client.messages
-        .create({
-            from: '+12342043900',
-            body: `Compraste: ${titles}`,
-            to: process.env.PHONE_NUMBER
-        })
-        .then(() => {
-            DAO.order.orderSave(cart)
-            .then((order) => {
-                const transporter = nodemailer.createTransport ({
-                    host: "smtp.gmail.com",
-                    port: 465,
-                    auth: {
-                        user: emailNotification,
-                        pass: 'bmhefmnvcnbcfdgh'
-                    },
-                    tls: {
-                        rejectUnauthorized: false
-                    }
-                })
-                const purchased = order[0].map(prod => {
-                    return prod.title
-                }).join(', ')
-                transporter.sendMail({
-                    from: emailNotification,
-                    to: [emailNotification],
-                    subject: 'New order generated',
-                    html:
-                        `
-                            <h2>Order created by: ${req.session.username}</h2>
-                            <p>Purchased products: ${purchased}</p>
-                        `
-                })
-                .then(res => console.log(res))
-                .catch(err => console.log(err))
-                DAO.cart.deleteAllProductsInCart('*')
-                res.send('Order sent!')
+    try {
+        const cart = await DAO.cart.getAll()
+        const titles = req.body.map(obj => {
+            return obj.title
+        }).join(', ')
+        const accountSid = process.env.TWILIO_ACCOUNT_SID
+        const authToken = process.env.TWILIO_AUTH_TOKEN
+        const client = require('twilio')(accountSid, authToken)
+        client.messages
+            .create({
+                from: '+12342043900',
+                body: `Compraste: ${titles}`,
+                to: process.env.PHONE_NUMBER
             })
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            .then(() => {
+                DAO.order.orderSave(cart)
+                .then((order) => {
+                    const transporter = nodemailer.createTransport ({
+                        host: "smtp.gmail.com",
+                        port: 465,
+                        auth: {
+                            user: emailNotification,
+                            pass: 'bmhefmnvcnbcfdgh'
+                        },
+                        tls: {
+                            rejectUnauthorized: false
+                        }
+                    })
+                    const purchased = order[0].map(prod => {
+                        return prod.title
+                    }).join(', ')
+                    transporter.sendMail({
+                        from: emailNotification,
+                        to: [emailNotification],
+                        subject: 'New order generated',
+                        html:
+                            `
+                                <h2>Order created by: ${req.session.username}</h2>
+                                <p>Purchased products: ${purchased}</p>
+                            `
+                    })
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err))
+                    DAO.cart.deleteAllProductsInCart(req.session.cartID)
+                    res.send('Order sent!')
+                })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    } catch (err) {
+        res.render('error.ejs', {err})
+    }
 }
 
 // --- Function: delete all products from current cart
 const deleteCartAll = async (req, res) => {
-    await DAO.cart.deleteAllProductsInCart(req.session.cartID)
-    res.send('Cart is now empty')
+    try {
+        DAO.cart.deleteAllProductsInCart(req.session.cartID)
+        res.send('Cart is now empty')
+    } catch (err) {
+        console.log(err)
+    } 
 }
 
 module.exports = {getAllCartsController, addToCartController, deleteCartController, deleteAllCartsController, sendOrder, deleteCartAll}

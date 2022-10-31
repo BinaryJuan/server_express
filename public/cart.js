@@ -1,31 +1,31 @@
 // --- Function: delete product from cart using ID
 const deleteCartProduct = (id) => {
-    fetch(`http://localhost:80/carts/${id}`, { 
+    fetch(`/carts/${id}`, { 
         method: 'DELETE'
     })
     .then(() => {
-        window.location.href = 'http://localhost:80/carts'
+        window.location.href = '/carts'
     })
 }
 
 // --- Function: delete all products from cart
 const deleteCartAll = () => {
-    fetch(`http://localhost:80/carts/deleteAll`, { 
+    fetch(`/carts/deleteAll`, { 
         method: 'DELETE'
     })
     .then(() => {
-        window.location.href = 'http://localhost:80/carts'
+        window.location.href = '/carts'
     })
 }
 
 // --- Function: send order fetch
 const send = (order) => {
-    fetch('http://localhost:80/carts/purchase', {
+    fetch('carts/purchase', {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         method: 'POST',
         body: order
     })
     .then(() => {
-        window.location.href = 'http://localhost:80/products'
+        window.location.href = '/products'
     })
 }

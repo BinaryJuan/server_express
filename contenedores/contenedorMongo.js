@@ -76,15 +76,9 @@ class ContenedorMongo {
     }
 
     async deleteAllProductsInCart(cartId) {
-        if (cartId == '*') {
-            const cart = await this.getAll()
-            cart[0].products.splice(0, cart[0].products.length)
-            cart[0].save()
-        } else {
-            const cart = await this.getByID(cartId)
-            cart[0].products.splice(0, cart[0].products.length)
-            cart[0].save()
-        }
+        const cart = await this.getByID(cartId)
+        cart[0].products.splice(0, cart[0].products.length)
+        cart[0].save()
     }
 
     async messagesSave(messages) {

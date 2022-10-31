@@ -24,6 +24,7 @@ const renderMessages = (messages, compressionPercentage) => {
                 <div class="messageStyle">
                     <img src=${msg.author.avatar} class="imgAvatar" alt='avatar' /><strong>${msg.author.username} <span class="hourStyle">${msg.author.timestamp}</span></strong>
                     <div>${msg.text}</div>
+                    <a style='text-decoration: underline;' href='/chat/${msg.author.id}'>See user messages</a>
                 </div>
             `)
         }).join(' ')
@@ -76,7 +77,7 @@ const addMessage = (e) => {
 
 // --- Function: delete a product by ID
 const deleteProduct = (id) => {
-    fetch(`http://localhost:80/products/${id}`, { 
+    fetch(`/products/${id}`, { 
         method: 'DELETE'
     })
     .then(() => {
@@ -86,7 +87,7 @@ const deleteProduct = (id) => {
 
 // --- Function: add to cart by ID
 const addProduct = (id) => {
-    fetch('http://localhost:80/carts', {
+    fetch('/carts', {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         method: 'POST',
         body: JSON.stringify({
