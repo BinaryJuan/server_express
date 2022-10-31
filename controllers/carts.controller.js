@@ -90,7 +90,7 @@ const sendOrder = async (req, res) => {
                     }).join(', ')
                     transporter.sendMail({
                         from: emailNotification,
-                        to: [emailNotification],
+                        to: [emailNotification, req.session.userObject.email],
                         subject: 'New order generated',
                         html:
                             `
