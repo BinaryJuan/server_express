@@ -13,10 +13,10 @@ const postLogInController = async (req, res) => {
         } else {
             if (foundItem) {
                 const compare = await bcrypt.compare(password, foundItem.password)
-                req.session.username = foundItem.username
-                req.session.userObject = foundItem
-                sessionUsername = foundItem
                 if (compare) {
+                    req.session.username = foundItem.username
+                    req.session.userObject = foundItem
+                    sessionUsername = foundItem
                     const products = await DAO.product.getAll()
                     const { id } = await DAO.cart.cartSave()
                     req.session.cartID = id

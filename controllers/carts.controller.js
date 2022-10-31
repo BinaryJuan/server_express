@@ -5,32 +5,44 @@ const emailNotification = process.env.EMAIL
 
 // Get all carts
 const getAllCartsController = async (req, res) => {
-    if (!req.session.username) {
-        res.render('login.ejs', {})
-    } else {
-        const cart = await DAO.cart.getAll()
-        const userCart = cart[0] ? cart[0].products : undefined
-        const user = req.session.userObject
-        res.render('carts.ejs', {userCart, user})
+    try {
+        if (!req.session.username) {
+            res.render('login.ejs', {})
+        } else {
+            const cart = await DAO.cart.getAll()
+            const userCart = cart[0] ? cart[0].products : undefined
+            const user = req.session.userObject
+            res.render('carts.ejs', {userCart, user})
+        }
+    } catch(err) {
+        console.log(err)
     }
 }
 
 // Add to cart
 const addToCartController = async (req, res) => {
-    const { addID } = req.body
-    let productToAdd = await DAO.product.getByID(addID)
-    if (productToAdd.length > 0) {
-        res.send(await DAO.cart.insertProductInCart(productToAdd, req.session.cartID))
-    } else {
-        res.send({error: 'The product does not belong to our inventory.'})
+    try {
+        const { addID } = req.body
+        let productToAdd = await DAO.product.getByID(addID)
+        if (productToAdd.length > 0) {
+            res.send(await DAO.cart.insertProductInCart(productToAdd, req.session.cartID))
+        } else {
+            res.send({error: 'The product does not belong to our inventory.'})
+        }
+    } catch(err) {
+        console.log(err)
     }
 }
 
 // Delete a product in cart - DELETE
 const deleteCartController = async (req, res) => {
-    const prodId = req.params.id
-    await DAO.cart.deleteProductInCart(req.session.cartID, prodId)
-    res.send(`Product with ID #${prodId} deleted from cart.`)
+    try {
+        const prodId = req.params.id
+        await DAO.cart.deleteProductInCart(req.session.cartID, prodId)
+        res.send(`Product with ID #${prodId} deleted from cart.`)
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 // Delete cart - DELETE

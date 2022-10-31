@@ -99,6 +99,21 @@ class ContenedorMongo {
         }
     }
 
+    async getByEmail(email) {
+        const messages = await this.getMessages()
+        const userMessages = messages[0].list.map(message => {
+            if (message.author.id == email) {
+                return message.text
+            }
+        }).filter(message => {
+            return message !== undefined
+        })
+        return userMessages
+    }
+
+    async getMessages() {
+        return await this.model.find({})
+    }
 }
 
 module.exports = ContenedorMongo;
